@@ -1,0 +1,118 @@
+import { useState } from "react";
+import { useToast } from "@/components/Toast";
+
+const contactInfo = [
+  { icon: "📍", title: "Address", value: "NIET, Greater Noida, Uttar Pradesh, India" },
+  { icon: "✉️", title: "Email", value: "vendorverse@niet.ac.in" },
+  { icon: "🛠️", title: "Tech Stack", value: "React.js · Node.js · Express.js · MongoDB" },
+  { icon: "👨‍🏫", title: "Supervisor", value: "Mr. Amit Kumar Yadav, Dept of CSE, NIET" },
+];
+
+export default function Contact() {
+  const { showToast } = useToast();
+  const [form, setForm] = useState({ firstName: "", lastName: "", email: "", subject: "", message: "" });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    showToast("✅ Message sent successfully!");
+    setForm({ firstName: "", lastName: "", email: "", subject: "", message: "" });
+  };
+
+  const inputStyle = {
+    background: "var(--surface2)",
+    borderColor: "var(--border-color)",
+    color: "var(--text)",
+  };
+
+  return (
+    <div style={{ paddingTop: 68 }}>
+      <section style={{ padding: "96px 0" }}>
+        <div className="max-w-[1200px] mx-auto px-6">
+          <div className="text-center mb-16">
+            <p className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>Contact</p>
+            <h1 className="font-display font-extrabold" style={{ fontSize: "var(--t-4xl)" }}>Get in touch</h1>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12" style={{ gridTemplateColumns: "1fr 1.2fr" }}>
+            {/* Left - Contact Info */}
+            <div className="flex flex-col gap-6">
+              {contactInfo.map((c) => (
+                <div key={c.title} className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-lg flex items-center justify-center text-xl flex-shrink-0" style={{ background: "var(--accent-glow)" }}>
+                    {c.icon}
+                  </div>
+                  <div>
+                    <p className="font-display font-bold text-sm mb-0.5">{c.title}</p>
+                    <p className="text-sm" style={{ color: "var(--text-muted)" }}>{c.value}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Right - Form */}
+            <div className="p-10 rounded-[20px] border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <input
+                    type="text"
+                    placeholder="First Name"
+                    value={form.firstName}
+                    onChange={(e) => setForm({ ...form, firstName: e.target.value })}
+                    required
+                    className="px-4 py-3 rounded-card border text-sm outline-none transition-colors focus:border-accent"
+                    style={inputStyle}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Last Name"
+                    value={form.lastName}
+                    onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+                    required
+                    className="px-4 py-3 rounded-card border text-sm outline-none transition-colors focus:border-accent"
+                    style={inputStyle}
+                  />
+                </div>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  required
+                  className="px-4 py-3 rounded-card border text-sm outline-none transition-colors focus:border-accent"
+                  style={inputStyle}
+                />
+                <input
+                  type="text"
+                  placeholder="Subject"
+                  value={form.subject}
+                  onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                  required
+                  className="px-4 py-3 rounded-card border text-sm outline-none transition-colors focus:border-accent"
+                  style={inputStyle}
+                />
+                <textarea
+                  placeholder="Message"
+                  rows={5}
+                  value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  required
+                  className="px-4 py-3 rounded-card border text-sm outline-none transition-colors resize-none focus:border-accent"
+                  style={inputStyle}
+                />
+                <button
+                  type="submit"
+                  className="w-full py-3 rounded-card font-bold text-sm transition-all duration-200"
+                  style={{ background: "var(--accent)", color: "var(--bg)" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 30px rgba(0,194,178,0.3)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}
+                >
+                  Send Message →
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
