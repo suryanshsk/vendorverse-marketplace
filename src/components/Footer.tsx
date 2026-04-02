@@ -14,7 +14,12 @@ const projectLinks = [
   { label: "Contact", path: "/contact" },
 ];
 
-const techLinks = ["React.js", "Node.js + Express", "MongoDB Atlas", "JWT Auth"];
+const techLinks = [
+  { label: "React.js", href: "https://react.dev" },
+  { label: "Node.js + Express", href: "https://nodejs.org" },
+  { label: "MongoDB Atlas", href: "https://www.mongodb.com/atlas" },
+  { label: "JWT Auth", href: "https://jwt.io" },
+];
 
 export default function Footer() {
   return (
@@ -57,7 +62,16 @@ export default function Footer() {
             <h4 className="font-display font-bold text-sm mb-3 sm:mb-4" style={{ color: "var(--text)" }}>Tech Stack</h4>
             <div className="flex flex-col gap-2">
               {techLinks.map((tech) => (
-                <span key={tech} className="text-sm" style={{ color: "var(--text-muted)" }}>{tech}</span>
+                <a
+                  key={tech.label}
+                  href={tech.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm transition-colors hover:text-accent"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {tech.label}
+                </a>
               ))}
             </div>
           </div>

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/components/Toast";
 
 const navLinks = [
   { path: "/", label: "Home" },
@@ -14,8 +16,15 @@ const navLinks = [
 export default function Navbar() {
   const location = useLocation();
   const { cartCount, toggleCart } = useCart();
+  const { currentUser, signOut } = useAuth();
+  const { showToast } = useToast();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleSignOut = () => {
+    signOut();
+    showToast("✅ Signed out successfully");
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -59,12 +68,41 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
-          <button
-            className="hidden sm:block px-3 sm:px-4 py-2 rounded-card text-sm font-medium border transition-all duration-200 hover:border-accent"
-            style={{ borderColor: "var(--border-color)", color: "var(--text-muted)", background: "transparent" }}
-          >
-            Sign In
-          </button>
+          {currentUser ? (
+            <>
+              <Link
+                to="/dashboard"
+                className="hidden sm:inline-flex px-3 sm:px-4 py-2 rounded-card text-xs sm:text-sm font-semibold border transition-all duration-200"
+                style={{ borderColor: "var(--accent-border)", color: "var(--accent)", background: "var(--accent-glow)" }}
+              >
+                {currentUser.role.toUpperCase()}
+              </Link>
+              <button
+                onClick={handleSignOut}
+                className="hidden sm:block px-3 sm:px-4 py-2 rounded-card text-sm font-medium border transition-all duration-200 hover:border-accent"
+                style={{ borderColor: "var(--border-color)", color: "var(--text-muted)", background: "transparent" }}
+              >
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/signin"
+                className="hidden sm:block px-3 sm:px-4 py-2 rounded-card text-sm font-medium border transition-all duration-200 hover:border-accent"
+                style={{ borderColor: "var(--border-color)", color: "var(--text-muted)", background: "transparent" }}
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/signup"
+                className="hidden md:block px-3 sm:px-4 py-2 rounded-card text-sm font-bold border transition-all duration-200"
+                style={{ borderColor: "var(--accent-border)", color: "var(--accent)", background: "var(--accent-glow)" }}
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
           <button
             onClick={toggleCart}
             className="px-3 sm:px-4 py-2 rounded-card text-xs sm:text-sm font-bold flex items-center gap-1.5 sm:gap-2 transition-all duration-200 relative"
@@ -108,12 +146,32 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <button
-              className="sm:hidden w-full text-left px-0 py-2 text-sm font-medium transition-colors"
-              style={{ color: "var(--text-muted)" }}
-            >
-              Sign In
-            </button>
+            {currentUser ? (
+              <button
+                onClick={handleSignOut}
+                className="sm:hidden w-full text-left px-0 py-2 text-sm font-medium transition-colors"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Sign Out
+              </button>
+            ) : (
+              <>
+                <Link
+                  to="/signin"
+                  className="sm:hidden w-full text-left px-0 py-2 text-sm font-medium transition-colors"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/signup"
+                  className="sm:hidden w-full text-left px-0 py-2 text-sm font-medium transition-colors"
+                  style={{ color: "var(--accent)" }}
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

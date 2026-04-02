@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/components/Toast";
+import { products } from "@/data/products";
 
 const miniProducts = [
-  { emoji: "🎧", name: "Earbuds Pro", price: "₹2,499" },
-  { emoji: "⌚", name: "Smart Watch", price: "₹8,999" },
-  { emoji: "👟", name: "Running Shoes", price: "₹3,499" },
-  { emoji: "⌨️", name: "Keyboard", price: "₹4,799" },
+  { id: 1, emoji: "🎧", name: "Earbuds Pro", price: "₹2,499" },
+  { id: 2, emoji: "⌚", name: "Smart Watch", price: "₹8,999" },
+  { id: 3, emoji: "👟", name: "Running Shoes", price: "₹3,499" },
+  { id: 4, emoji: "⌨️", name: "Keyboard", price: "₹4,799" },
 ];
 
 const features = [
@@ -45,6 +46,13 @@ const techStack = [
 export default function Home() {
   const { addToCart } = useCart();
   const { showToast } = useToast();
+
+  const addMiniProduct = (id: number) => {
+    const product = products.find((item) => item.id === id);
+    if (!product) return;
+    addToCart(product);
+    showToast(`${product.emoji} ${product.name} added to cart!`);
+  };
 
   return (
     <div style={{ paddingTop: 68 }}>
@@ -143,7 +151,13 @@ export default function Home() {
                       <p className="text-xs font-medium mb-1" style={{ color: "var(--text)" }}>{p.name}</p>
                       <div className="flex items-center justify-between">
                         <span className="font-mono text-xs font-bold" style={{ color: "var(--accent)" }}>{p.price}</span>
-                        <button className="text-xs px-2 py-1 rounded-md font-medium transition-colors" style={{ background: "var(--accent-glow)", color: "var(--accent)" }}>Add</button>
+                        <button
+                          onClick={() => addMiniProduct(p.id)}
+                          className="text-xs px-2 py-1 rounded-md font-medium transition-colors"
+                          style={{ background: "var(--accent-glow)", color: "var(--accent)" }}
+                        >
+                          Add
+                        </button>
                       </div>
                     </div>
                   ))}
