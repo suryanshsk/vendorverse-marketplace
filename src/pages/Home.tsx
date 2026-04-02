@@ -49,7 +49,7 @@ export default function Home() {
   return (
     <div style={{ paddingTop: 68 }}>
       {/* Hero */}
-      <section className="min-h-screen flex items-center relative overflow-hidden" style={{ padding: "96px 0" }}>
+      <section className="min-h-screen flex items-center relative overflow-hidden py-12 sm:py-16 lg:py-24">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -66,16 +66,16 @@ export default function Home() {
           }}
         />
 
-        <div className="max-w-[1200px] mx-auto px-6 relative z-10 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 relative z-10 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left */}
-            <div>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-pill border mb-8" style={{ borderColor: "var(--accent-border)" }}>
+            <div className="text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-pill border mb-6 sm:mb-8" style={{ borderColor: "var(--accent-border)" }}>
                 <span className="w-2 h-2 rounded-full animate-pulse-dot" style={{ background: "var(--accent)" }} />
-                <span className="font-mono text-xs" style={{ color: "var(--accent)" }}>MERN Stack · Full Stack · Production Ready</span>
+                <span className="font-mono text-[10px] sm:text-xs" style={{ color: "var(--accent)" }}>MERN Stack · Full Stack · Production Ready</span>
               </div>
 
-              <h1 className="font-display font-extrabold leading-[1.08] tracking-[-0.04em] mb-6" style={{ fontSize: "var(--t-hero)" }}>
+              <h1 className="font-display font-extrabold leading-[1.08] tracking-[-0.04em] mb-4 sm:mb-6 text-[clamp(2rem,6vw,3.247rem)]">
                 One Platform.{" "}
                 <span className="relative inline-block" style={{ color: "var(--accent)" }}>
                   Infinite
@@ -84,14 +84,14 @@ export default function Home() {
                 Vendors.
               </h1>
 
-              <p className="mb-8 max-w-lg leading-relaxed" style={{ fontSize: "var(--t-md)", color: "var(--text-muted)" }}>
+              <p className="mb-6 sm:mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed text-sm sm:text-base" style={{ color: "var(--text-muted)" }}>
                 VendorVerse is a scalable multivendor e-commerce marketplace where vendors thrive, customers discover, and admins orchestrate — all in one unified platform.
               </p>
 
-              <div className="flex flex-wrap gap-4 mb-10">
+              <div className="flex flex-wrap gap-3 sm:gap-4 mb-8 sm:mb-10 justify-center lg:justify-start">
                 <Link
                   to="/products"
-                  className="px-6 py-3 rounded-card font-bold text-sm transition-all duration-200 inline-flex items-center gap-2"
+                  className="px-5 sm:px-6 py-3 rounded-card font-bold text-sm transition-all duration-200 inline-flex items-center gap-2"
                   style={{ background: "var(--accent)", color: "var(--bg)" }}
                   onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 30px rgba(0,194,178,0.3)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}
@@ -100,7 +100,7 @@ export default function Home() {
                 </Link>
                 <Link
                   to="/dashboard"
-                  className="px-6 py-3 rounded-card font-bold text-sm border transition-all duration-200"
+                  className="px-5 sm:px-6 py-3 rounded-card font-bold text-sm border transition-all duration-200"
                   style={{ borderColor: "var(--border-color)", color: "var(--text-muted)" }}
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent-border)"; e.currentTarget.style.background = "var(--accent-glow)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-color)"; e.currentTarget.style.background = "transparent"; }}
@@ -109,17 +109,17 @@ export default function Home() {
                 </Link>
               </div>
 
-              <div className="flex gap-10">
+              <div className="flex gap-6 sm:gap-10 justify-center lg:justify-start">
                 {[
                   { num: "500+", label: "Products Listed" },
                   { num: "120+", label: "Active Vendors" },
                   { num: "12k+", label: "Happy Customers" },
                 ].map((s) => (
                   <div key={s.label}>
-                    <p className="font-display font-extrabold text-2xl">
+                    <p className="font-display font-extrabold text-xl sm:text-2xl">
                       {s.num.replace("+", "")}<span style={{ color: "var(--accent)" }}>+</span>
                     </p>
-                    <p className="text-xs" style={{ color: "var(--text-muted)" }}>{s.label}</p>
+                    <p className="text-[10px] sm:text-xs" style={{ color: "var(--text-muted)" }}>{s.label}</p>
                   </div>
                 ))}
               </div>
@@ -165,17 +165,17 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="border-t border-b" style={{ background: "var(--surface)", borderColor: "var(--border-color)", padding: "96px 0" }}>
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-16">
+      <section className="border-t border-b" style={{ background: "var(--surface)", borderColor: "var(--border-color)", padding: "64px 0" }}>
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-16">
             <p className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>Features</p>
-            <h2 className="font-display font-extrabold" style={{ fontSize: "var(--t-4xl)" }}>Everything you need to run a marketplace</h2>
+            <h2 className="font-display font-extrabold text-[clamp(1.4rem,4vw,2.027rem)]">Everything you need to run a marketplace</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {features.map((f) => (
               <div
                 key={f.title}
-                className="p-6 rounded-card border relative overflow-hidden group transition-all duration-300 hover:-translate-y-1"
+                className="p-5 sm:p-6 rounded-card border relative overflow-hidden group transition-all duration-300 hover:-translate-y-1"
                 style={{ background: "var(--bg)", borderColor: "var(--border-color)" }}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent-border)"; e.currentTarget.style.boxShadow = "0 0 30px rgba(0,194,178,0.08)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-color)"; e.currentTarget.style.boxShadow = "none"; }}
@@ -184,7 +184,7 @@ export default function Home() {
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center text-2xl mb-4" style={{ background: "var(--accent-glow)" }}>
                   {f.icon}
                 </div>
-                <h3 className="font-display font-bold text-lg mb-2">{f.title}</h3>
+                <h3 className="font-display font-bold text-base sm:text-lg mb-2">{f.title}</h3>
                 <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{f.desc}</p>
               </div>
             ))}
@@ -193,26 +193,26 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section style={{ padding: "96px 0" }}>
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-16">
+      <section className="py-16 sm:py-24">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-16">
             <p className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>How It Works</p>
-            <h2 className="font-display font-extrabold" style={{ fontSize: "var(--t-4xl)" }}>Start selling in 4 simple steps</h2>
+            <h2 className="font-display font-extrabold text-[clamp(1.4rem,4vw,2.027rem)]">Start selling in 4 simple steps</h2>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 relative">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 relative">
             <div className="hidden lg:block absolute top-8 left-[12.5%] right-[12.5%] h-[2px]" style={{ background: "var(--border-color)" }} />
             {steps.map((s) => (
               <div key={s.num} className="text-center relative z-10 group">
                 <div
-                  className="w-16 h-16 rounded-full border-2 flex items-center justify-center font-display font-extrabold text-lg mx-auto mb-4 transition-all duration-300 group-hover:text-bg"
+                  className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 flex items-center justify-center font-display font-extrabold text-sm sm:text-lg mx-auto mb-3 sm:mb-4 transition-all duration-300"
                   style={{ borderColor: "var(--accent)", color: "var(--accent)", background: "transparent" }}
                   onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent)"; e.currentTarget.style.color = "var(--bg)"; e.currentTarget.style.boxShadow = "0 0 30px rgba(0,194,178,0.3)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--accent)"; e.currentTarget.style.boxShadow = "none"; }}
                 >
                   {s.num}
                 </div>
-                <h3 className="font-display font-bold mb-1">{s.title}</h3>
-                <p className="text-sm" style={{ color: "var(--text-muted)" }}>{s.desc}</p>
+                <h3 className="font-display font-bold text-sm sm:text-base mb-1">{s.title}</h3>
+                <p className="text-xs sm:text-sm" style={{ color: "var(--text-muted)" }}>{s.desc}</p>
               </div>
             ))}
           </div>
@@ -220,25 +220,25 @@ export default function Home() {
       </section>
 
       {/* User Roles */}
-      <section className="border-t border-b" style={{ background: "var(--surface)", borderColor: "var(--border-color)", padding: "96px 0" }}>
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-16">
+      <section className="border-t border-b" style={{ background: "var(--surface)", borderColor: "var(--border-color)", padding: "64px 0" }}>
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-16">
             <p className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>User Roles</p>
-            <h2 className="font-display font-extrabold" style={{ fontSize: "var(--t-4xl)" }}>Built for every stakeholder</h2>
+            <h2 className="font-display font-extrabold text-[clamp(1.4rem,4vw,2.027rem)]">Built for every stakeholder</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             {roles.map((r) => (
               <div
                 key={r.title}
-                className="p-6 rounded-card border transition-all duration-300 hover:-translate-y-1"
+                className="p-5 sm:p-6 rounded-card border transition-all duration-300 hover:-translate-y-1"
                 style={{
                   background: "var(--bg)",
                   borderColor: r.featured ? "var(--accent-border)" : "var(--border-color)",
                   boxShadow: r.featured ? "0 0 30px rgba(0,194,178,0.08)" : "none",
                 }}
               >
-                <div className="text-4xl mb-4">{r.icon}</div>
-                <h3 className="font-display font-bold text-xl mb-2">{r.title}</h3>
+                <div className="text-3xl sm:text-4xl mb-4">{r.icon}</div>
+                <h3 className="font-display font-bold text-lg sm:text-xl mb-2">{r.title}</h3>
                 <p className="text-sm mb-4" style={{ color: "var(--text-muted)" }}>{r.desc}</p>
                 <div className="flex flex-col gap-2">
                   {r.perms.map((p) => (
@@ -255,24 +255,24 @@ export default function Home() {
       </section>
 
       {/* Tech Stack */}
-      <section style={{ padding: "96px 0" }}>
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-16">
+      <section className="py-16 sm:py-24">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-16">
             <p className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>Tech Stack</p>
-            <h2 className="font-display font-extrabold" style={{ fontSize: "var(--t-4xl)" }}>Powered by modern technologies</h2>
+            <h2 className="font-display font-extrabold text-[clamp(1.4rem,4vw,2.027rem)]">Powered by modern technologies</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
             {techStack.map((t) => (
               <div
                 key={t.name}
-                className="p-5 rounded-card border text-center transition-all duration-300 hover:-translate-y-1"
+                className="p-4 sm:p-5 rounded-card border text-center transition-all duration-300 hover:-translate-y-1"
                 style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent-border)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-color)"; }}
               >
-                <div className="text-3xl mb-2">{t.icon}</div>
-                <p className="font-display font-bold text-sm">{t.name}</p>
-                <p className="text-xs" style={{ color: "var(--text-dim)" }}>{t.type}</p>
+                <div className="text-2xl sm:text-3xl mb-2">{t.icon}</div>
+                <p className="font-display font-bold text-xs sm:text-sm">{t.name}</p>
+                <p className="text-[10px] sm:text-xs" style={{ color: "var(--text-dim)" }}>{t.type}</p>
               </div>
             ))}
           </div>
@@ -280,17 +280,17 @@ export default function Home() {
       </section>
 
       {/* CTA Band */}
-      <section className="relative overflow-hidden" style={{ padding: "96px 0" }}>
+      <section className="relative overflow-hidden py-16 sm:py-24">
         <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at center, rgba(0,194,178,0.1) 0%, transparent 60%)" }} />
-        <div className="max-w-[1200px] mx-auto px-6 text-center relative z-10">
-          <h2 className="font-display font-extrabold mb-4" style={{ fontSize: "var(--t-4xl)" }}>Ready to build your marketplace?</h2>
-          <p className="mb-8 max-w-lg mx-auto" style={{ color: "var(--text-muted)" }}>
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 text-center relative z-10">
+          <h2 className="font-display font-extrabold mb-4 text-[clamp(1.4rem,4vw,2.027rem)]">Ready to build your marketplace?</h2>
+          <p className="mb-8 max-w-lg mx-auto text-sm sm:text-base" style={{ color: "var(--text-muted)" }}>
             Join hundreds of vendors already growing their business on VendorVerse.
           </p>
-          <div className="flex justify-center gap-4 flex-wrap">
+          <div className="flex justify-center gap-3 sm:gap-4 flex-wrap">
             <Link
               to="/products"
-              className="px-6 py-3 rounded-card font-bold text-sm transition-all duration-200"
+              className="px-5 sm:px-6 py-3 rounded-card font-bold text-sm transition-all duration-200"
               style={{ background: "var(--accent)", color: "var(--bg)" }}
               onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 30px rgba(0,194,178,0.3)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}
@@ -299,7 +299,7 @@ export default function Home() {
             </Link>
             <Link
               to="/pricing"
-              className="px-6 py-3 rounded-card font-bold text-sm border transition-all duration-200"
+              className="px-5 sm:px-6 py-3 rounded-card font-bold text-sm border transition-all duration-200"
               style={{ borderColor: "var(--border-color)", color: "var(--text-muted)" }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent-border)"; e.currentTarget.style.background = "var(--accent-glow)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-color)"; e.currentTarget.style.background = "transparent"; }}

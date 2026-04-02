@@ -37,13 +37,13 @@ export default function Navbar() {
         height: 68,
       }}
     >
-      <div className="max-w-[1200px] mx-auto px-6 h-full flex items-center justify-between">
-        <Link to="/" className="font-display font-extrabold text-xl flex-shrink-0">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
+        <Link to="/" className="font-display font-extrabold text-lg sm:text-xl flex-shrink-0">
           <span style={{ color: "var(--text)" }}>Vendor</span>
           <span style={{ color: "var(--accent)" }}>Verse</span>
         </Link>
 
-        <div className="hidden lg:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-6 xl:gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.path}
@@ -58,21 +58,21 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
-            className="hidden sm:block px-4 py-2 rounded-card text-sm font-medium border transition-all duration-200 hover:border-accent"
+            className="hidden sm:block px-3 sm:px-4 py-2 rounded-card text-sm font-medium border transition-all duration-200 hover:border-accent"
             style={{ borderColor: "var(--border-color)", color: "var(--text-muted)", background: "transparent" }}
           >
             Sign In
           </button>
           <button
             onClick={toggleCart}
-            className="px-4 py-2 rounded-card text-sm font-bold flex items-center gap-2 transition-all duration-200 relative"
+            className="px-3 sm:px-4 py-2 rounded-card text-xs sm:text-sm font-bold flex items-center gap-1.5 sm:gap-2 transition-all duration-200 relative"
             style={{ background: "var(--accent)", color: "var(--bg)" }}
             onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent-hover)"; e.currentTarget.style.boxShadow = "0 0 20px rgba(0,194,178,0.3)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "var(--accent)"; e.currentTarget.style.boxShadow = "none"; }}
           >
-            🛒 Cart
+            🛒 <span className="hidden xs:inline">Cart</span>
             {cartCount > 0 && (
               <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center" style={{ background: "var(--danger)", color: "#fff" }}>
                 {cartCount}
@@ -97,7 +97,7 @@ export default function Navbar() {
 
       {mobileOpen && (
         <div className="lg:hidden border-t" style={{ background: "rgba(10,15,30,0.97)", borderColor: "var(--border-color)" }}>
-          <div className="max-w-[1200px] mx-auto px-6 py-4 flex flex-col gap-3">
+          <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-4 flex flex-col gap-3">
             {navLinks.map((link) => (
               <Link
                 key={link.path}

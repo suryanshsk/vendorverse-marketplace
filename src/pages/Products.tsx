@@ -35,14 +35,14 @@ export default function Products() {
 
   return (
     <div style={{ paddingTop: 68 }}>
-      <section style={{ padding: "96px 0" }}>
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-10">
+      <section className="py-16 sm:py-24">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 sm:mb-10">
             <div>
-              <h1 className="font-display font-extrabold" style={{ fontSize: "var(--t-4xl)" }}>Marketplace</h1>
-              <p className="text-sm" style={{ color: "var(--text-muted)" }}>500+ products from 120+ verified vendors</p>
+              <h1 className="font-display font-extrabold text-[clamp(1.4rem,4vw,2.027rem)]">Marketplace</h1>
+              <p className="text-xs sm:text-sm" style={{ color: "var(--text-muted)" }}>500+ products from 120+ verified vendors</p>
             </div>
-            <div className="relative">
+            <div className="relative w-full sm:w-auto">
               <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" style={{ color: "var(--text-dim)" }}>
                 <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
               </svg>
@@ -51,18 +51,18 @@ export default function Products() {
                 placeholder="Search products or vendors..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 pr-4 py-2.5 rounded-card border text-sm w-64 outline-none transition-colors focus:border-accent"
+                className="pl-10 pr-4 py-2.5 rounded-card border text-sm w-full sm:w-64 outline-none transition-colors focus:border-accent"
                 style={{ background: "var(--surface2)", borderColor: "var(--border-color)", color: "var(--text)" }}
               />
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-3 mb-10">
+          <div className="flex flex-wrap gap-2 sm:gap-3 mb-8 sm:mb-10">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className="px-4 py-2 rounded-pill text-sm font-medium border transition-all duration-200"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-pill text-xs sm:text-sm font-medium border transition-all duration-200"
                 style={{
                   borderColor: activeCategory === cat ? "var(--accent-border)" : "var(--border-color)",
                   color: activeCategory === cat ? "var(--accent)" : "var(--text-muted)",
@@ -74,7 +74,7 @@ export default function Products() {
             ))}
           </div>
 
-          <div className="grid gap-6" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))" }}>
+          <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filtered.map((p) => (
               <div
                 key={p.id}
@@ -83,7 +83,7 @@ export default function Products() {
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent-border)"; e.currentTarget.style.boxShadow = "0 0 30px rgba(0,194,178,0.08)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-color)"; e.currentTarget.style.boxShadow = "none"; }}
               >
-                <div className="h-[200px] flex items-center justify-center text-6xl relative" style={{ background: "linear-gradient(135deg, var(--surface2), var(--bg))" }}>
+                <div className="h-[160px] sm:h-[200px] flex items-center justify-center text-5xl sm:text-6xl relative" style={{ background: "linear-gradient(135deg, var(--surface2), var(--bg))" }}>
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "radial-gradient(circle at center, rgba(0,194,178,0.08), transparent)" }} />
                   {p.emoji}
                   {p.badge && (
@@ -98,17 +98,17 @@ export default function Products() {
                     {wishlist.has(p.id) ? "❤️" : "🤍"}
                   </button>
                 </div>
-                <div className="p-4">
+                <div className="p-3 sm:p-4">
                   <p className="text-xs mb-1 flex items-center gap-1" style={{ color: "var(--accent)" }}>🏬 {p.vendor}</p>
-                  <p className="font-semibold mb-2" style={{ fontSize: "var(--t-md)" }}>{p.name}</p>
+                  <p className="font-semibold mb-2 text-sm sm:text-base">{p.name}</p>
                   <div className="flex items-center gap-1 mb-3">
                     <span style={{ color: "#F59E0B" }}>{"★".repeat(Math.floor(p.rating))}</span>
-                    <span className="text-xs" style={{ color: "var(--text-muted)" }}>{p.rating} ({p.reviews})</span>
+                    <span className="text-[10px] sm:text-xs" style={{ color: "var(--text-muted)" }}>{p.rating} ({p.reviews})</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono font-bold" style={{ color: "var(--accent)" }}>₹{p.price.toLocaleString()}</span>
-                      <span className="font-mono text-xs line-through" style={{ color: "var(--text-dim)" }}>₹{p.original.toLocaleString()}</span>
+                      <span className="font-mono font-bold text-sm" style={{ color: "var(--accent)" }}>₹{p.price.toLocaleString()}</span>
+                      <span className="font-mono text-[10px] sm:text-xs line-through" style={{ color: "var(--text-dim)" }}>₹{p.original.toLocaleString()}</span>
                     </div>
                     <button
                       onClick={() => handleAdd(p)}
