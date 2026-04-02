@@ -26,33 +26,33 @@ export default function Contact() {
 
   return (
     <div style={{ paddingTop: 68 }}>
-      <section style={{ padding: "96px 0" }}>
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-16">
+      <section className="py-16 sm:py-24">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-16">
             <p className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>Contact</p>
-            <h1 className="font-display font-extrabold" style={{ fontSize: "var(--t-4xl)" }}>Get in touch</h1>
+            <h1 className="font-display font-extrabold text-[clamp(1.4rem,4vw,2.027rem)]">Get in touch</h1>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12" style={{ gridTemplateColumns: "1fr 1.2fr" }}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             {/* Left - Contact Info */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-5 sm:gap-6">
               {contactInfo.map((c) => (
                 <div key={c.title} className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-lg flex items-center justify-center text-xl flex-shrink-0" style={{ background: "var(--accent-glow)" }}>
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-lg sm:text-xl flex-shrink-0" style={{ background: "var(--accent-glow)" }}>
                     {c.icon}
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <p className="font-display font-bold text-sm mb-0.5">{c.title}</p>
-                    <p className="text-sm" style={{ color: "var(--text-muted)" }}>{c.value}</p>
+                    <p className="text-sm break-words" style={{ color: "var(--text-muted)" }}>{c.value}</p>
                   </div>
                 </div>
               ))}
             </div>
 
             {/* Right - Form */}
-            <div className="p-10 rounded-[20px] border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+            <div className="p-6 sm:p-10 rounded-[20px] border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <input
                     type="text"
                     placeholder="First Name"

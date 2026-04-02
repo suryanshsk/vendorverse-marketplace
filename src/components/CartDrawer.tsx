@@ -21,29 +21,27 @@ export default function CartDrawer() {
         onClick={toggleCart}
       />
       <div
-        className="fixed right-0 z-[101] flex flex-col border-l"
+        className="fixed right-0 z-[101] flex flex-col border-l w-full sm:w-[400px]"
         style={{
           top: 68,
-          width: 400,
-          maxWidth: "100vw",
           maxHeight: "calc(100vh - 68px)",
           background: "var(--bg)",
           borderColor: "var(--border-color)",
         }}
       >
-        <div className="flex items-center justify-between p-5 border-b sticky top-0 z-10" style={{ borderColor: "var(--border-color)", background: "var(--bg)" }}>
+        <div className="flex items-center justify-between p-4 sm:p-5 border-b sticky top-0 z-10" style={{ borderColor: "var(--border-color)", background: "var(--bg)" }}>
           <h2 className="font-display font-extrabold text-lg">Your Cart 🛒</h2>
           <button onClick={toggleCart} className="text-vtext-muted hover:text-vtext transition-colors text-xl">✕</button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-5">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5">
           {cart.length === 0 ? (
             <p className="text-center py-20" style={{ color: "var(--text-muted)" }}>Your cart is empty</p>
           ) : (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-3 sm:gap-4">
               {cart.map((item) => (
-                <div key={item.id} className="flex items-center gap-4 p-3 rounded-card border" style={{ borderColor: "var(--border-color)", background: "var(--surface)" }}>
-                  <div className="w-[52px] h-[52px] rounded-[10px] flex items-center justify-center text-2xl" style={{ background: "var(--surface2)" }}>
+                <div key={item.id} className="flex items-center gap-3 sm:gap-4 p-3 rounded-card border" style={{ borderColor: "var(--border-color)", background: "var(--surface)" }}>
+                  <div className="w-11 h-11 sm:w-[52px] sm:h-[52px] rounded-[10px] flex items-center justify-center text-xl sm:text-2xl flex-shrink-0" style={{ background: "var(--surface2)" }}>
                     {item.emoji}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -51,7 +49,7 @@ export default function CartDrawer() {
                     <p className="text-xs" style={{ color: "var(--text-muted)" }}>{item.vendor}</p>
                     <p className="font-mono font-bold text-sm" style={{ color: "var(--accent)" }}>₹{item.price.toLocaleString()}</p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-shrink-0">
                     <button
                       onClick={() => changeQty(item.id, -1)}
                       className="w-7 h-7 rounded-md flex items-center justify-center border text-sm font-bold transition-colors hover:border-accent"
@@ -75,7 +73,7 @@ export default function CartDrawer() {
         </div>
 
         {cart.length > 0 && (
-          <div className="p-5 border-t sticky bottom-0" style={{ borderColor: "var(--border-color)", background: "var(--bg)" }}>
+          <div className="p-4 sm:p-5 border-t sticky bottom-0" style={{ borderColor: "var(--border-color)", background: "var(--bg)" }}>
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm" style={{ color: "var(--text-muted)" }}>Total</span>
               <span className="font-display font-extrabold text-xl" style={{ color: "var(--accent)" }}>₹{cartTotal.toLocaleString()}</span>

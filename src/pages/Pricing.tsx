@@ -65,19 +65,19 @@ export default function Pricing() {
 
   return (
     <div style={{ paddingTop: 68 }}>
-      <section style={{ padding: "96px 0" }}>
-        <div className="max-w-[980px] mx-auto px-6">
-          <div className="text-center mb-16">
+      <section className="py-16 sm:py-24">
+        <div className="max-w-[980px] mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-16">
             <p className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>Pricing</p>
-            <h1 className="font-display font-extrabold mb-4" style={{ fontSize: "var(--t-4xl)" }}>Simple, transparent pricing</h1>
-            <p style={{ color: "var(--text-muted)" }}>Choose the plan that fits your vendor needs</p>
+            <h1 className="font-display font-extrabold mb-4 text-[clamp(1.4rem,4vw,2.027rem)]">Simple, transparent pricing</h1>
+            <p className="text-sm sm:text-base" style={{ color: "var(--text-muted)" }}>Choose the plan that fits your vendor needs</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-16 sm:mb-24">
             {plans.map((plan) => (
               <div
                 key={plan.name}
-                className="p-6 rounded-card border relative transition-all duration-300 hover:-translate-y-1"
+                className={`p-5 sm:p-6 rounded-card border relative transition-all duration-300 hover:-translate-y-1 ${plan.popular ? "sm:col-span-2 md:col-span-1" : ""}`}
                 style={{
                   background: "var(--surface)",
                   borderColor: plan.popular ? "var(--accent-border)" : "var(--border-color)",
@@ -86,7 +86,7 @@ export default function Pricing() {
               >
                 {plan.popular && (
                   <span
-                    className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-pill text-xs font-bold"
+                    className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-pill text-xs font-bold whitespace-nowrap"
                     style={{ background: "var(--accent)", color: "var(--bg)" }}
                   >
                     MOST POPULAR
@@ -96,7 +96,7 @@ export default function Pricing() {
                   <h3 className="font-display font-bold text-lg mb-1">{plan.name}</h3>
                   <p className="text-xs mb-4" style={{ color: "var(--text-muted)" }}>{plan.desc}</p>
                   <div className="flex items-baseline gap-1">
-                    <span className="font-display font-extrabold text-3xl">{plan.price}</span>
+                    <span className="font-display font-extrabold text-2xl sm:text-3xl">{plan.price}</span>
                     <span className="text-sm" style={{ color: "var(--text-muted)" }}>{plan.period}</span>
                   </div>
                 </div>
@@ -133,17 +133,17 @@ export default function Pricing() {
 
           {/* FAQ */}
           <div className="max-w-[640px] mx-auto">
-            <h2 className="font-display font-extrabold text-center mb-8" style={{ fontSize: "var(--t-2xl)" }}>Frequently Asked Questions</h2>
+            <h2 className="font-display font-extrabold text-center mb-6 sm:mb-8 text-[clamp(1.2rem,3vw,1.602rem)]">Frequently Asked Questions</h2>
             <div className="flex flex-col gap-3">
               {faqs.map((faq, i) => (
                 <div key={i} className="rounded-card border overflow-hidden" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
                   <button
                     onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    className="w-full text-left px-5 py-4 flex items-center justify-between text-sm font-medium transition-colors"
+                    className="w-full text-left px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between text-sm font-medium transition-colors"
                   >
-                    {faq.question}
+                    <span className="pr-4">{faq.question}</span>
                     <span
-                      className="text-lg transition-transform duration-300 flex-shrink-0 ml-4"
+                      className="text-lg transition-transform duration-300 flex-shrink-0"
                       style={{ transform: openFaq === i ? "rotate(180deg)" : "rotate(0deg)", color: "var(--accent)" }}
                     >
                       ↓
@@ -153,7 +153,7 @@ export default function Pricing() {
                     className="overflow-hidden transition-all duration-300"
                     style={{ maxHeight: openFaq === i ? 200 : 0 }}
                   >
-                    <p className="px-5 pb-4 text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{faq.answer}</p>
+                    <p className="px-4 sm:px-5 pb-4 text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{faq.answer}</p>
                   </div>
                 </div>
               ))}
