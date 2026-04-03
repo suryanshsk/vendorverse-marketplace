@@ -15,9 +15,9 @@ export default function SignIn() {
   const { showToast } = useToast();
   const [form, setForm] = useState({ email: "", password: "", role: "vendor" as UserRole });
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const result = signIn(form);
+    const result = await signIn(form);
     if (!result.ok) {
       showToast(`❌ ${result.message}`);
       return;

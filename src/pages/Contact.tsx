@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useToast } from "@/components/Toast";
+import { apiRequest } from "@/lib/api";
 
 const contactInfo = [
   { icon: "📍", title: "Address", value: "NIET, Greater Noida, Uttar Pradesh, India" },
@@ -12,9 +13,18 @@ export default function Contact() {
   const { showToast } = useToast();
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", subject: "", message: "" });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    showToast("✅ Message sent successfully!");
+    const result = await apiRequest<{ message: string }>("/api/contact", {
+      method: "POST",
+      body: JSON.stringify(form),
+    });
+    if (!result.ok) {
+      showToast(`❌ ${result.message || "Failed to send message."}`);
+      return;
+    }
+
+    showToast(result.message || "✅ Message sent successfully!");
     setForm({ firstName: "", lastName: "", email: "", subject: "", message: "" });
   };
 

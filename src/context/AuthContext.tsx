@@ -1,4 +1,5 @@
-import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { apiRequest } from "@/lib/api";
 
 export type UserRole = "customer" | "vendor" | "admin";
 
@@ -26,9 +27,9 @@ interface SignInInput {
 
 interface AuthContextType {
   currentUser: User | null;
-  signUp: (payload: SignUpInput) => { ok: boolean; message: string };
-  signIn: (payload: SignInInput) => { ok: boolean; message: string };
-  signOut: () => void;
+  signUp: (payload: SignUpInput) => Promise<{ ok: boolean; message: string }>;
+  signIn: (payload: SignInInput) => Promise<{ ok: boolean; message: string }>;
+  signOut: () => Promise<void>;
 }
 
 interface StoredUser extends User {
@@ -68,7 +69,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [users, setUsers] = useState<StoredUser[]>(seedUsers);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
-  const signUp = (payload: SignUpInput) => {
+  useEffect(() => {
+    void (async () => {
+      const response = await apiRequest<{ user: User }>("/api/auth/me");
+      if (response.ok && response.data?.user) {
+        setCurrentUser(response.data.user);
+      }
+    })();
+  }, []);
+
+  const signUp = async (payload: SignUpInput) => {
+    const apiResponse = await apiRequest<{ user: User }>("/api/auth/signup", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+
+    if (apiResponse.ok && apiResponse.data?.user) {
+      setCurrentUser(apiResponse.data.user);
+      return { ok: true, message: apiResponse.message || "Account created successfully." };
+    }
+
     const normalizedEmail = payload.email.trim().toLowerCase();
     const exists = users.some((u) => u.email === normalizedEmail && u.role === payload.role);
 
@@ -97,7 +117,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { ok: true, message: "Account created successfully." };
   };
 
-  const signIn = (payload: SignInInput) => {
+  const signIn = async (payload: SignInInput) => {
+    const apiResponse = await apiRequest<{ user: User }>("/api/auth/signin", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+
+    if (apiResponse.ok && apiResponse.data?.user) {
+      setCurrentUser(apiResponse.data.user);
+      return { ok: true, message: apiResponse.message || "Signed in successfully." };
+    }
+
     const normalizedEmail = payload.email.trim().toLowerCase();
     const match = users.find(
       (u) => u.email === normalizedEmail && u.password === payload.password && u.role === payload.role
@@ -113,12 +143,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { ok: true, message: "Signed in successfully." };
   };
 
-  const signOut = () => setCurrentUser(null);
+  const signOut = async () => {
+    await apiRequest<{ message: string }>("/api/auth/signout", { method: "POST" });
+    setCurrentUser(null);
+  };
 
-  const value = useMemo(
-    () => ({ currentUser, signUp, signIn, signOut }),
-    [currentUser]
-  );
+  const value = { currentUser, signUp, signIn, signOut };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

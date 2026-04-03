@@ -1,23 +1,34 @@
-import { useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { products, categories, categoryMap } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/components/Toast";
+import { apiRequest } from "@/lib/api";
 
 export default function Products() {
   const [activeCategory, setActiveCategory] = useState("All Products");
   const [search, setSearch] = useState("");
   const [wishlist, setWishlist] = useState<Set<number>>(new Set());
+  const [catalog, setCatalog] = useState(products);
   const { addToCart } = useCart();
   const { showToast } = useToast();
 
+  useEffect(() => {
+    void (async () => {
+      const response = await apiRequest<{ products: typeof products }>("/api/products");
+      if (response.ok && response.data?.products) {
+        setCatalog(response.data.products);
+      }
+    })();
+  }, []);
+
   const filtered = useMemo(() => {
     const cat = categoryMap[activeCategory];
-    return products.filter((p) => {
+    return catalog.filter((p) => {
       const matchCat = cat === "all" || p.category === cat;
       const matchSearch = !search || p.name.toLowerCase().includes(search.toLowerCase()) || p.vendor.toLowerCase().includes(search.toLowerCase());
       return matchCat && matchSearch;
     });
-  }, [activeCategory, search]);
+  }, [activeCategory, catalog, search]);
 
   const toggleWishlist = (id: number) => {
     setWishlist((prev) => {

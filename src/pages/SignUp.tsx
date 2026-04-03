@@ -21,9 +21,9 @@ export default function SignUp() {
     role: "vendor" as UserRole,
   });
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const result = signUp(form);
+    const result = await signUp(form);
     if (!result.ok) {
       showToast(`❌ ${result.message}`);
       return;

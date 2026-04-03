@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth, type UserRole } from "@/context/AuthContext";
 import { useToast } from "@/components/Toast";
+import { apiRequest } from "@/lib/api";
 
 const sidebarSections = [
   {
@@ -109,11 +110,21 @@ export default function Dashboard() {
   const [activeItem, setActiveItem] = useState("Overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [previewRole, setPreviewRole] = useState<UserRole>("vendor");
+  const [remoteOrders, setRemoteOrders] = useState(stakeholderRows.vendor);
 
   const currentRole = useMemo<UserRole>(() => {
     if (currentUser?.role) return currentUser.role;
     return previewRole;
   }, [currentUser?.role, previewRole]);
+
+  useEffect(() => {
+    void (async () => {
+      const response = await apiRequest<{ orders: typeof stakeholderRows.vendor }>(`/api/dashboard?role=${currentRole}`);
+      if (response.ok && response.data?.orders) {
+        setRemoteOrders(response.data.orders);
+      }
+    })();
+  }, [currentRole]);
 
   const handleSidebarClick = (label: string) => {
     if (label === "Logout") {
@@ -334,7 +345,7 @@ export default function Dashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {stakeholderRows[currentRole].map((row) => (
+                  {remoteOrders.map((row) => (
                     <tr key={row.id} className="border-b transition-colors" style={{ borderColor: "var(--border-color)" }}>
                       <td className="py-3 px-3 font-mono font-bold text-xs sm:text-sm" style={{ color: "var(--accent)" }}>{row.id}</td>
                       <td className="py-3 px-3 text-xs sm:text-sm">{row.col2}</td>
