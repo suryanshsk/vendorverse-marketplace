@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth, type UserRole } from "@/context/AuthContext";
 import { useToast } from "@/components/Toast";
 import { apiRequest } from "@/lib/api";
+import { products } from "@/data/products";
 
 const sidebarSections = [
   {
@@ -91,6 +92,297 @@ const stakeholderRows: Record<UserRole, { col2: string; col3: string; col4: stri
   ],
 };
 
+const reviewCards = [
+  { name: "Priya Shah", rating: 5, text: "The delivery was fast and the product quality matched the description." },
+  { name: "Rohit Verma", rating: 4, text: "Great catalog experience. The dashboard makes order tracking simple." },
+  { name: "Meera Joshi", rating: 5, text: "The platform feels polished and very responsive on mobile." },
+];
+
+const notificationCards = [
+  { title: "New order placed", text: "Order #VV-7832 was placed 3 minutes ago." },
+  { title: "Vendor approval", text: "TechZone India storefront verification is complete." },
+  { title: "Low inventory", text: "Mechanical Keyboard stock is below the reorder threshold." },
+];
+
+const storeMetrics = [
+  { label: "Store views", value: "12.8K" },
+  { label: "Conversion", value: "4.6%" },
+  { label: "Response time", value: "1h 12m" },
+];
+
+function actionButtonLabel(role: UserRole, item: string) {
+  if (role === "customer") {
+    if (item === "Overview") return "Browse marketplace";
+    if (item === "Orders") return "Track purchases";
+    if (item === "Revenue") return "View spending";
+    if (item === "My Store") return "Open wishlist";
+    if (item === "Reviews") return "Rate recent order";
+    if (item === "Notifications") return "Read alerts";
+    if (item === "Settings") return "Update profile";
+  }
+
+  if (role === "admin") {
+    if (item === "Overview") return "Open admin console";
+    if (item === "Orders") return "Review disputes";
+    if (item === "Revenue") return "Inspect platform GMV";
+    if (item === "My Store") return "Manage vendors";
+    if (item === "Reviews") return "Audit feedback";
+    if (item === "Notifications") return "Check system alerts";
+    if (item === "Settings") return "Security settings";
+  }
+
+  if (item === "Overview") return "Create product";
+  if (item === "Products") return "Add new listing";
+  if (item === "Orders") return "Fulfill orders";
+  if (item === "Revenue") return "Export earnings";
+  if (item === "My Store") return "Edit storefront";
+  if (item === "Reviews") return "Reply to reviews";
+  if (item === "Notifications") return "View updates";
+  if (item === "Settings") return "Save changes";
+  return "Open section";
+}
+
+function DashboardPanel({
+  role,
+  activeItem,
+  onAction,
+}: {
+  role: UserRole;
+  activeItem: string;
+  onAction: (label: string) => void;
+}) {
+  if (activeItem === "Products") {
+    return (
+      <div className="p-4 sm:p-5 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+        <div className="flex items-center justify-between gap-3 mb-4">
+          <div>
+            <p className="font-display font-bold text-sm">Product Management</p>
+            <p className="text-xs" style={{ color: "var(--text-muted)" }}>Listings backed by the catalog and dashboard data.</p>
+          </div>
+          <button
+            onClick={() => onAction(actionButtonLabel(role, activeItem))}
+            className="px-4 py-2 rounded-card text-xs font-bold transition-all"
+            style={{ background: "var(--accent)", color: "var(--bg)" }}
+          >
+            {actionButtonLabel(role, activeItem)}
+          </button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+          {products.slice(0, 6).map((product) => (
+            <div key={product.id} className="p-4 rounded-card border" style={{ background: "var(--surface2)", borderColor: "var(--border-color)" }}>
+              <div className="flex items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl" style={{ background: "var(--accent-glow)" }}>{product.emoji}</div>
+                  <div>
+                    <p className="font-display font-bold text-sm">{product.name}</p>
+                    <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>{product.vendor}</p>
+                  </div>
+                </div>
+                <span className="font-mono text-xs font-bold" style={{ color: "var(--accent)" }}>₹{product.price.toLocaleString()}</span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span style={{ color: "var(--text-muted)" }}>Rating {product.rating} • {product.reviews} reviews</span>
+                <button onClick={() => onAction(`Edited ${product.name}`)} className="text-[11px] font-bold" style={{ color: "var(--accent)" }}>Edit</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (activeItem === "Orders") {
+    return (
+      <div className="p-4 sm:p-5 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+        <div className="flex items-center justify-between gap-3 mb-4">
+          <div>
+            <p className="font-display font-bold text-sm">Order Center</p>
+            <p className="text-xs" style={{ color: "var(--text-muted)" }}>Track, fulfill, and resolve orders across the platform.</p>
+          </div>
+          <button
+            onClick={() => onAction(actionButtonLabel(role, activeItem))}
+            className="px-4 py-2 rounded-card text-xs font-bold transition-all"
+            style={{ background: "var(--accent)", color: "var(--bg)" }}
+          >
+            {actionButtonLabel(role, activeItem)}
+          </button>
+        </div>
+        <div className="grid gap-3">
+          {role === "customer"
+            ? stakeholderRows.customer.map((row) => (
+                <div key={row.id} className="flex items-center justify-between gap-3 p-3 rounded-card border" style={{ background: "var(--surface2)", borderColor: "var(--border-color)" }}>
+                  <div>
+                    <p className="font-display font-bold text-sm">{row.col3}</p>
+                    <p className="text-xs" style={{ color: "var(--text-muted)" }}>{row.col2} • {row.date}</p>
+                  </div>
+                  <span className="font-mono text-xs" style={{ color: statusColors[row.status] ?? "var(--accent)" }}>{row.status}</span>
+                </div>
+              ))
+            : stakeholderRows.vendor.map((row) => (
+                <div key={row.id} className="flex items-center justify-between gap-3 p-3 rounded-card border" style={{ background: "var(--surface2)", borderColor: "var(--border-color)" }}>
+                  <div>
+                    <p className="font-display font-bold text-sm">{row.col2}</p>
+                    <p className="text-xs" style={{ color: "var(--text-muted)" }}>{row.col3} • {row.date}</p>
+                  </div>
+                  <span className="font-mono text-xs" style={{ color: statusColors[row.status] ?? "var(--accent)" }}>{row.col4}</span>
+                </div>
+              ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (activeItem === "Revenue") {
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2 p-4 sm:p-5 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <div>
+              <p className="font-display font-bold text-sm">Revenue snapshot</p>
+              <p className="text-xs" style={{ color: "var(--text-muted)" }}>Recent sales and platform earnings</p>
+            </div>
+            <button onClick={() => onAction(actionButtonLabel(role, activeItem))} className="px-4 py-2 rounded-card text-xs font-bold" style={{ background: "var(--accent)", color: "var(--bg)" }}>
+              {actionButtonLabel(role, activeItem)}
+            </button>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {storeMetrics.map((metric) => (
+              <div key={metric.label} className="p-4 rounded-card border text-center" style={{ background: "var(--surface2)", borderColor: "var(--border-color)" }}>
+                <p className="font-display font-extrabold text-lg text-[var(--accent)]">{metric.value}</p>
+                <p className="text-[11px] mt-1" style={{ color: "var(--text-muted)" }}>{metric.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="p-4 sm:p-5 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+          <p className="font-display font-bold text-sm mb-3">Quick actions</p>
+          <div className="flex flex-col gap-2">
+            {[
+              "Download report",
+              "Compare month",
+              "Review payouts",
+            ].map((item) => (
+              <button key={item} onClick={() => onAction(item)} className="text-left px-3 py-2 rounded-lg border text-sm" style={{ borderColor: "var(--border-color)", color: "var(--text-muted)" }}>
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (activeItem === "My Store") {
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="p-4 sm:p-5 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+          <p className="font-display font-bold text-sm mb-3">Store details</p>
+          <div className="space-y-3 text-sm">
+            <p style={{ color: "var(--text-muted)" }}>Store name: <span style={{ color: "var(--text)" }}>VendorVerse Store</span></p>
+            <p style={{ color: "var(--text-muted)" }}>Status: <span style={{ color: "var(--success)" }}>Verified</span></p>
+            <p style={{ color: "var(--text-muted)" }}>Support response: <span style={{ color: "var(--text)" }}>Under 2 hours</span></p>
+          </div>
+          <button onClick={() => onAction(actionButtonLabel(role, activeItem))} className="mt-4 px-4 py-2 rounded-card text-xs font-bold" style={{ background: "var(--accent)", color: "var(--bg)" }}>
+            {actionButtonLabel(role, activeItem)}
+          </button>
+        </div>
+        <div className="p-4 sm:p-5 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+          <p className="font-display font-bold text-sm mb-3">Store metrics</p>
+          <div className="grid grid-cols-3 gap-3">
+            {storeMetrics.map((metric) => (
+              <div key={metric.label} className="p-3 rounded-card border text-center" style={{ background: "var(--surface2)", borderColor: "var(--border-color)" }}>
+                <p className="font-display font-extrabold text-base" style={{ color: "var(--accent)" }}>{metric.value}</p>
+                <p className="text-[10px] mt-1" style={{ color: "var(--text-muted)" }}>{metric.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (activeItem === "Reviews") {
+    return (
+      <div className="grid gap-3">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="font-display font-bold text-sm">Customer feedback</p>
+            <p className="text-xs" style={{ color: "var(--text-muted)" }}>Recent ratings and review activity.</p>
+          </div>
+          <button onClick={() => onAction(actionButtonLabel(role, activeItem))} className="px-4 py-2 rounded-card text-xs font-bold" style={{ background: "var(--accent)", color: "var(--bg)" }}>
+            {actionButtonLabel(role, activeItem)}
+          </button>
+        </div>
+        {reviewCards.map((review) => (
+          <div key={review.name} className="p-4 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+            <div className="flex items-center justify-between mb-2">
+              <p className="font-display font-bold text-sm">{review.name}</p>
+              <span style={{ color: "var(--warning)" }}>{"★".repeat(review.rating)}</span>
+            </div>
+            <p className="text-sm" style={{ color: "var(--text-muted)" }}>{review.text}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (activeItem === "Notifications") {
+    return (
+      <div className="grid gap-3">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="font-display font-bold text-sm">Notifications</p>
+            <p className="text-xs" style={{ color: "var(--text-muted)" }}>Marketplace alerts, approvals, and system updates.</p>
+          </div>
+          <button onClick={() => onAction(actionButtonLabel(role, activeItem))} className="px-4 py-2 rounded-card text-xs font-bold" style={{ background: "var(--accent)", color: "var(--bg)" }}>
+            {actionButtonLabel(role, activeItem)}
+          </button>
+        </div>
+        {notificationCards.map((item) => (
+          <div key={item.title} className="p-4 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+            <p className="font-display font-bold text-sm mb-1">{item.title}</p>
+            <p className="text-sm" style={{ color: "var(--text-muted)" }}>{item.text}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (activeItem === "Settings") {
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="p-4 sm:p-5 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+          <p className="font-display font-bold text-sm mb-3">Profile settings</p>
+          <div className="space-y-3 text-sm" style={{ color: "var(--text-muted)" }}>
+            <p>Name: <span style={{ color: "var(--text)" }}>{roleTitle(role)}</span></p>
+            <p>Email notifications: <span style={{ color: "var(--success)" }}>Enabled</span></p>
+            <p>Security: <span style={{ color: "var(--text)" }}>JWT + HTTPS</span></p>
+          </div>
+          <button onClick={() => onAction(actionButtonLabel(role, activeItem))} className="mt-4 px-4 py-2 rounded-card text-xs font-bold" style={{ background: "var(--accent)", color: "var(--bg)" }}>
+            {actionButtonLabel(role, activeItem)}
+          </button>
+        </div>
+        <div className="p-4 sm:p-5 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+          <p className="font-display font-bold text-sm mb-3">Account actions</p>
+          <div className="flex flex-col gap-2">
+            {[
+              "Change password",
+              "Update contact info",
+              "Manage notifications",
+            ].map((item) => (
+              <button key={item} onClick={() => onAction(item)} className="text-left px-3 py-2 rounded-lg border text-sm" style={{ borderColor: "var(--border-color)", color: "var(--text-muted)" }}>
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+}
+
 function roleTitle(role: UserRole) {
   if (role === "vendor") return "Vendor Dashboard";
   if (role === "customer") return "Customer Dashboard";
@@ -135,6 +427,30 @@ export default function Dashboard() {
     }
     setActiveItem(label);
     setSidebarOpen(false);
+  };
+
+  const handlePanelAction = (label: string) => {
+    if (label === "Browse marketplace") {
+      navigate("/products");
+      return;
+    }
+    if (label === "Open wishlist") {
+      showToast("❤️ Wishlist is saved in your dashboard session.");
+      return;
+    }
+    if (label === "Open admin console") {
+      showToast("⚙️ Admin console section opened.");
+      return;
+    }
+    if (label === "Edit storefront") {
+      showToast("🏬 Storefront editor opened.");
+      return;
+    }
+    if (label === "Track purchases") {
+      navigate("/products");
+      return;
+    }
+    showToast(`✅ ${label}`);
   };
 
   return (
@@ -254,6 +570,8 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
+
+          <DashboardPanel role={currentRole} activeItem={activeItem} onAction={handlePanelAction} />
 
           {currentRole === "vendor" ? (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">

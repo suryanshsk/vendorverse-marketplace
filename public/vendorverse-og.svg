@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="VendorVerse social preview">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0A0F1E" />
+      <stop offset="100%" stop-color="#111827" />
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#00C2B2" stop-opacity="0.32" />
+      <stop offset="100%" stop-color="#00C2B2" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#glow)" />
+  <text x="90" y="210" fill="#F0F4FF" font-family="Syne, sans-serif" font-size="88" font-weight="800">Vendor</text>
+  <text x="540" y="210" fill="#00C2B2" font-family="Syne, sans-serif" font-size="88" font-weight="800">Verse</text>
+  <text x="90" y="300" fill="#8C9AB0" font-family="Inter, sans-serif" font-size="32" font-weight="500">Multivendor E-Commerce Marketplace</text>
+  <rect x="90" y="380" width="340" height="92" rx="24" fill="#00C2B2" />
+  <text x="160" y="438" fill="#0A0F1E" font-family="Inter, sans-serif" font-size="30" font-weight="700">Built for students</text>
+</svg>
