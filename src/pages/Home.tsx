@@ -1,7 +1,10 @@
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/components/Toast";
 import { products } from "@/data/products";
+
+const MotionLink = motion(Link);
 
 const miniProducts = [
   { id: 1, emoji: "🎧", name: "Earbuds Pro", price: "₹2,499" },
@@ -43,6 +46,21 @@ const techStack = [
   { icon: "🐙", name: "GitHub", type: "Version Control" },
 ];
 
+const pageVariants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.08 } },
+};
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
+
 export default function Home() {
   const { addToCart } = useCart();
   const { showToast } = useToast();
@@ -55,16 +73,17 @@ export default function Home() {
   };
 
   return (
-    <div style={{ paddingTop: 68 }}>
-      {/* Hero */}
-      <section className="min-h-screen flex items-center relative overflow-hidden py-12 sm:py-16 lg:py-24">
-        <div
+    <motion.div style={{ paddingTop: 68 }} variants={pageVariants} initial="hidden" animate="show">
+      <motion.section className="min-h-screen flex items-center relative overflow-hidden py-12 sm:py-16 lg:py-24" variants={sectionVariants}>
+        <motion.div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: "radial-gradient(ellipse at 80% 20%, rgba(0,194,178,0.12) 0%, transparent 50%), radial-gradient(ellipse at 20% 80%, rgba(59,130,246,0.08) 0%, transparent 50%)",
+            background: "radial-gradient(ellipse at 80% 20%, rgba(138,90,60,0.10) 0%, transparent 50%), radial-gradient(ellipse at 20% 80%, rgba(220,179,150,0.10) 0%, transparent 50%)",
           }}
+          animate={{ opacity: [0.72, 1, 0.72], scale: [1, 1.02, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
-        <div
+        <motion.div
           className="absolute inset-0 pointer-events-none opacity-[0.04]"
           style={{
             backgroundImage: "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
@@ -72,114 +91,100 @@ export default function Home() {
             mask: "radial-gradient(ellipse at center, black 30%, transparent 70%)",
             WebkitMask: "radial-gradient(ellipse at center, black 30%, transparent 70%)",
           }}
+          animate={{ opacity: [0.02, 0.06, 0.02] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
 
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 relative z-10 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            {/* Left */}
-            <div className="text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-pill border mb-6 sm:mb-8" style={{ borderColor: "var(--accent-border)" }}>
+            <motion.div className="text-center lg:text-left" variants={cardVariants}>
+              <motion.div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-pill border mb-6 sm:mb-8" style={{ borderColor: "var(--accent-border)" }} whileHover={{ y: -2, scale: 1.01 }}>
                 <span className="w-2 h-2 rounded-full animate-pulse-dot" style={{ background: "var(--accent)" }} />
                 <span className="font-mono text-[10px] sm:text-xs" style={{ color: "var(--accent)" }}>MERN Stack · Full Stack · Production Ready</span>
-              </div>
+              </motion.div>
 
-              <h1 className="font-display font-extrabold leading-[1.08] tracking-[-0.04em] mb-4 sm:mb-6 text-[clamp(2rem,6vw,3.247rem)]">
-                One Platform.{" "}
-                <span className="relative inline-block" style={{ color: "var(--accent)" }}>
-                  Infinite
-                  <span className="absolute bottom-0 left-0 w-full h-1 rounded-full" style={{ background: "linear-gradient(90deg, var(--accent), transparent)" }} />
-                </span>{" "}
-                Vendors.
-              </h1>
+              <motion.h1 className="font-display font-extrabold leading-[1.08] tracking-[-0.04em] mb-4 sm:mb-6 text-[clamp(2rem,6vw,3.247rem)]" variants={cardVariants}>
+                One Platform. <span className="relative inline-block" style={{ color: "var(--accent)" }}>Infinite <span className="absolute bottom-0 left-0 w-full h-1 rounded-full" style={{ background: "linear-gradient(90deg, var(--accent), transparent)" }} /></span> Vendors.
+              </motion.h1>
 
-              <p className="mb-6 sm:mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed text-sm sm:text-base" style={{ color: "var(--text-muted)" }}>
+              <motion.p className="mb-6 sm:mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed text-sm sm:text-base" style={{ color: "var(--text-muted)" }} variants={cardVariants}>
                 VendorVerse is a scalable multivendor e-commerce marketplace where vendors thrive, customers discover, and admins orchestrate — all in one unified platform.
-              </p>
+              </motion.p>
 
-              <div className="flex flex-wrap gap-3 sm:gap-4 mb-8 sm:mb-10 justify-center lg:justify-start">
-                <Link
-                  to="/products"
-                  className="px-5 sm:px-6 py-3 rounded-card font-bold text-sm transition-all duration-200 inline-flex items-center gap-2"
-                  style={{ background: "var(--accent)", color: "var(--bg)" }}
-                  onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 30px rgba(0,194,178,0.3)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}
-                >
+              <motion.div className="flex flex-wrap gap-3 sm:gap-4 mb-8 sm:mb-10 justify-center lg:justify-start" variants={cardVariants}>
+                <MotionLink to="/products" className="px-5 sm:px-6 py-3 rounded-card font-bold text-sm transition-all duration-200 inline-flex items-center gap-2" style={{ background: "var(--accent)", color: "var(--on-accent)" }} whileHover={{ y: -2, scale: 1.01 }} whileTap={{ scale: 0.98 }}>
                   Explore Products →
-                </Link>
-                <Link
-                  to="/dashboard"
-                  className="px-5 sm:px-6 py-3 rounded-card font-bold text-sm border transition-all duration-200"
-                  style={{ borderColor: "var(--border-color)", color: "var(--text-muted)" }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent-border)"; e.currentTarget.style.background = "var(--accent-glow)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-color)"; e.currentTarget.style.background = "transparent"; }}
-                >
+                </MotionLink>
+                <MotionLink to="/dashboard" className="px-5 sm:px-6 py-3 rounded-card font-bold text-sm border transition-all duration-200" style={{ borderColor: "var(--border-color)", color: "var(--text-muted)" }} whileHover={{ y: -2, backgroundColor: "var(--accent-glow)" }} whileTap={{ scale: 0.98 }}>
                   Vendor Dashboard
-                </Link>
-              </div>
+                </MotionLink>
+              </motion.div>
 
-              <div className="flex gap-6 sm:gap-10 justify-center lg:justify-start">
+              <motion.div className="flex gap-6 sm:gap-10 justify-center lg:justify-start" variants={cardVariants}>
                 {[
                   { num: "500+", label: "Products Listed" },
                   { num: "120+", label: "Active Vendors" },
                   { num: "12k+", label: "Happy Customers" },
                 ].map((s) => (
-                  <div key={s.label}>
+                  <motion.div key={s.label} whileHover={{ y: -2 }}>
                     <p className="font-display font-extrabold text-xl sm:text-2xl">
                       {s.num.replace("+", "")}<span style={{ color: "var(--accent)" }}>+</span>
                     </p>
                     <p className="text-[10px] sm:text-xs" style={{ color: "var(--text-muted)" }}>{s.label}</p>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
-            {/* Right - Browser Mockup */}
-            <div className="hidden lg:block relative">
-              <div className="rounded-2xl border overflow-hidden" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+            <motion.div className="hidden lg:block relative" variants={cardVariants}>
+              <motion.div className="rounded-2xl border overflow-hidden" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }} whileHover={{ y: -4 }}>
                 <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: "var(--border-color)" }}>
-                  <span className="w-3 h-3 rounded-full" style={{ background: "#EF4444" }} />
-                  <span className="w-3 h-3 rounded-full" style={{ background: "#F59E0B" }} />
-                  <span className="w-3 h-3 rounded-full" style={{ background: "#22C55E" }} />
+                  <span className="w-3 h-3 rounded-full" style={{ background: "#E97A62" }} />
+                  <span className="w-3 h-3 rounded-full" style={{ background: "#D9B57F" }} />
+                  <span className="w-3 h-3 rounded-full" style={{ background: "#4E7A5E" }} />
                   <div className="flex-1 mx-3 px-3 py-1 rounded-md text-xs font-mono" style={{ background: "var(--surface2)", color: "var(--text-dim)" }}>
                     vendorverse.com/marketplace
                   </div>
                 </div>
                 <div className="p-4 grid grid-cols-2 gap-3">
-                  {miniProducts.map((p) => (
-                    <div key={p.name} className="p-3 rounded-lg border transition-all duration-200 hover:border-accent/30" style={{ background: "var(--surface2)", borderColor: "var(--border-color)" }}>
+                  {miniProducts.map((p, index) => (
+                    <motion.div
+                      key={p.name}
+                      className="p-3 rounded-lg border transition-all duration-200"
+                      style={{ background: "var(--surface2)", borderColor: "var(--border-color)" }}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.15 + index * 0.08, duration: 0.45 }}
+                      whileHover={{ y: -3 }}
+                    >
                       <div className="text-3xl mb-2">{p.emoji}</div>
                       <p className="text-xs font-medium mb-1" style={{ color: "var(--text)" }}>{p.name}</p>
                       <div className="flex items-center justify-between">
                         <span className="font-mono text-xs font-bold" style={{ color: "var(--accent)" }}>{p.price}</span>
-                        <button
-                          onClick={() => addMiniProduct(p.id)}
-                          className="text-xs px-2 py-1 rounded-md font-medium transition-colors"
-                          style={{ background: "var(--accent-glow)", color: "var(--accent)" }}
-                        >
+                        <button onClick={() => addMiniProduct(p.id)} className="text-xs px-2 py-1 rounded-md font-medium transition-colors" style={{ background: "var(--accent-glow)", color: "var(--accent)" }}>
                           Add
                         </button>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="absolute -top-4 -right-4 px-4 py-3 rounded-card border animate-float" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+              <motion.div className="absolute -top-4 -right-4 px-4 py-3 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }} animate={{ y: [0, -8, 0] }} transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}>
                 <p className="text-sm font-medium">📦 New Order!</p>
                 <p className="text-xs" style={{ color: "var(--text-muted)" }}>Just confirmed</p>
-              </div>
+              </motion.div>
 
-              <div className="absolute -bottom-4 -left-4 px-4 py-3 rounded-card border animate-float" style={{ background: "var(--surface)", borderColor: "var(--border-color)", animationDelay: "1.5s" }}>
+              <motion.div className="absolute -bottom-4 -left-4 px-4 py-3 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }} animate={{ y: [0, 8, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}>
                 <p className="text-sm font-medium">↑ 34% Revenue</p>
                 <p className="text-xs" style={{ color: "var(--text-muted)" }}>vs last month</p>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Features */}
-      <section className="border-t border-b" style={{ background: "var(--surface)", borderColor: "var(--border-color)", padding: "64px 0" }}>
+      <motion.section className="border-t border-b" style={{ background: "var(--surface)", borderColor: "var(--border-color)", padding: "64px 0" }} variants={sectionVariants} whileInView="show" initial="hidden" viewport={{ once: true, amount: 0.2 }}>
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
           <div className="text-center mb-10 sm:mb-16">
             <p className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>Features</p>
@@ -187,27 +192,18 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {features.map((f) => (
-              <div
-                key={f.title}
-                className="p-5 sm:p-6 rounded-card border relative overflow-hidden group transition-all duration-300 hover:-translate-y-1"
-                style={{ background: "var(--bg)", borderColor: "var(--border-color)" }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent-border)"; e.currentTarget.style.boxShadow = "0 0 30px rgba(0,194,178,0.08)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-color)"; e.currentTarget.style.boxShadow = "none"; }}
-              >
+              <motion.div key={f.title} className="p-5 sm:p-6 rounded-card border relative overflow-hidden group" style={{ background: "var(--bg)", borderColor: "var(--border-color)" }} variants={cardVariants} whileHover={{ y: -6, boxShadow: "0 18px 36px rgba(138,90,60,0.08)" }}>
                 <div className="absolute top-0 left-0 right-0 h-[2px] transition-transform duration-300 origin-left scale-x-0 group-hover:scale-x-100" style={{ background: "var(--accent)" }} />
-                <div className="w-12 h-12 rounded-lg flex items-center justify-center text-2xl mb-4" style={{ background: "var(--accent-glow)" }}>
-                  {f.icon}
-                </div>
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center text-2xl mb-4" style={{ background: "var(--accent-glow)" }}>{f.icon}</div>
                 <h3 className="font-display font-bold text-base sm:text-lg mb-2">{f.title}</h3>
                 <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{f.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* How It Works */}
-      <section className="py-16 sm:py-24">
+      <motion.section className="py-16 sm:py-24" variants={sectionVariants} whileInView="show" initial="hidden" viewport={{ once: true, amount: 0.2 }}>
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
           <div className="text-center mb-10 sm:mb-16">
             <p className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>How It Works</p>
@@ -216,25 +212,24 @@ export default function Home() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 relative">
             <div className="hidden lg:block absolute top-8 left-[12.5%] right-[12.5%] h-[2px]" style={{ background: "var(--border-color)" }} />
             {steps.map((s) => (
-              <div key={s.num} className="text-center relative z-10 group">
+              <motion.div key={s.num} className="text-center relative z-10 group" variants={cardVariants} whileHover={{ y: -4 }}>
                 <div
                   className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 flex items-center justify-center font-display font-extrabold text-sm sm:text-lg mx-auto mb-3 sm:mb-4 transition-all duration-300"
                   style={{ borderColor: "var(--accent)", color: "var(--accent)", background: "transparent" }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent)"; e.currentTarget.style.color = "var(--bg)"; e.currentTarget.style.boxShadow = "0 0 30px rgba(0,194,178,0.3)"; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent)"; e.currentTarget.style.color = "var(--on-accent)"; e.currentTarget.style.boxShadow = "0 0 30px rgba(138,90,60,0.24)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--accent)"; e.currentTarget.style.boxShadow = "none"; }}
                 >
                   {s.num}
                 </div>
                 <h3 className="font-display font-bold text-sm sm:text-base mb-1">{s.title}</h3>
                 <p className="text-xs sm:text-sm" style={{ color: "var(--text-muted)" }}>{s.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* User Roles */}
-      <section className="border-t border-b" style={{ background: "var(--surface)", borderColor: "var(--border-color)", padding: "64px 0" }}>
+      <motion.section className="border-t border-b" style={{ background: "var(--surface)", borderColor: "var(--border-color)", padding: "64px 0" }} variants={sectionVariants} whileInView="show" initial="hidden" viewport={{ once: true, amount: 0.2 }}>
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
           <div className="text-center mb-10 sm:mb-16">
             <p className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>User Roles</p>
@@ -242,14 +237,16 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             {roles.map((r) => (
-              <div
+              <motion.div
                 key={r.title}
-                className="p-5 sm:p-6 rounded-card border transition-all duration-300 hover:-translate-y-1"
+                className="p-5 sm:p-6 rounded-card border"
                 style={{
                   background: "var(--bg)",
                   borderColor: r.featured ? "var(--accent-border)" : "var(--border-color)",
-                  boxShadow: r.featured ? "0 0 30px rgba(0,194,178,0.08)" : "none",
+                  boxShadow: r.featured ? "0 0 30px rgba(138,90,60,0.08)" : "none",
                 }}
+                variants={cardVariants}
+                whileHover={{ y: -6, boxShadow: r.featured ? "0 0 30px rgba(138,90,60,0.12)" : "0 12px 30px rgba(0,0,0,0.04)" }}
               >
                 <div className="text-3xl sm:text-4xl mb-4">{r.icon}</div>
                 <h3 className="font-display font-bold text-lg sm:text-xl mb-2">{r.title}</h3>
@@ -262,14 +259,13 @@ export default function Home() {
                     </p>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Tech Stack */}
-      <section className="py-16 sm:py-24">
+      <motion.section className="py-16 sm:py-24" variants={sectionVariants} whileInView="show" initial="hidden" viewport={{ once: true, amount: 0.2 }}>
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
           <div className="text-center mb-10 sm:mb-16">
             <p className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>Tech Stack</p>
@@ -277,52 +273,33 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
             {techStack.map((t) => (
-              <div
-                key={t.name}
-                className="p-4 sm:p-5 rounded-card border text-center transition-all duration-300 hover:-translate-y-1"
-                style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent-border)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-color)"; }}
-              >
+              <motion.div key={t.name} className="p-4 sm:p-5 rounded-card border text-center" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }} variants={cardVariants} whileHover={{ y: -5, borderColor: "var(--accent-border)" }}>
                 <div className="text-2xl sm:text-3xl mb-2">{t.icon}</div>
                 <p className="font-display font-bold text-xs sm:text-sm">{t.name}</p>
                 <p className="text-[10px] sm:text-xs" style={{ color: "var(--text-dim)" }}>{t.type}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* CTA Band */}
-      <section className="relative overflow-hidden py-16 sm:py-24">
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at center, rgba(0,194,178,0.1) 0%, transparent 60%)" }} />
+      <motion.section className="relative overflow-hidden py-16 sm:py-24" variants={sectionVariants} whileInView="show" initial="hidden" viewport={{ once: true, amount: 0.2 }}>
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at center, rgba(138,90,60,0.08) 0%, transparent 60%)" }} />
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 text-center relative z-10">
           <h2 className="font-display font-extrabold mb-4 text-[clamp(1.4rem,4vw,2.027rem)]">Ready to build your marketplace?</h2>
           <p className="mb-8 max-w-lg mx-auto text-sm sm:text-base" style={{ color: "var(--text-muted)" }}>
             Join hundreds of vendors already growing their business on VendorVerse.
           </p>
           <div className="flex justify-center gap-3 sm:gap-4 flex-wrap">
-            <Link
-              to="/products"
-              className="px-5 sm:px-6 py-3 rounded-card font-bold text-sm transition-all duration-200"
-              style={{ background: "var(--accent)", color: "var(--bg)" }}
-              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 30px rgba(0,194,178,0.3)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}
-            >
+            <MotionLink to="/products" className="px-5 sm:px-6 py-3 rounded-card font-bold text-sm transition-all duration-200" style={{ background: "var(--accent)", color: "var(--on-accent)" }} whileHover={{ y: -2, scale: 1.01 }} whileTap={{ scale: 0.98 }}>
               Start Shopping →
-            </Link>
-            <Link
-              to="/pricing"
-              className="px-5 sm:px-6 py-3 rounded-card font-bold text-sm border transition-all duration-200"
-              style={{ borderColor: "var(--border-color)", color: "var(--text-muted)" }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent-border)"; e.currentTarget.style.background = "var(--accent-glow)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-color)"; e.currentTarget.style.background = "transparent"; }}
-            >
+            </MotionLink>
+            <MotionLink to="/pricing" className="px-5 sm:px-6 py-3 rounded-card font-bold text-sm border transition-all duration-200" style={{ borderColor: "var(--border-color)", color: "var(--text-muted)" }} whileHover={{ y: -2, backgroundColor: "var(--accent-glow)" }} whileTap={{ scale: 0.98 }}>
               View Plans
-            </Link>
+            </MotionLink>
           </div>
         </div>
-      </section>
-    </div>
+      </motion.section>
+    </motion.div>
   );
 }

@@ -40,9 +40,9 @@ export default function Navbar() {
     <nav
       className="fixed top-0 left-0 right-0 z-[90] transition-all duration-300"
       style={{
-        background: scrolled ? "rgba(10,15,30,0.97)" : "rgba(10,15,30,0.85)",
+        background: scrolled ? "rgba(247,241,231,0.92)" : "rgba(247,241,231,0.78)",
         backdropFilter: "blur(20px)",
-        borderBottom: scrolled ? "1px solid var(--accent)" : "1px solid transparent",
+        borderBottom: scrolled ? "1px solid var(--accent-border)" : "1px solid transparent",
         height: 68,
       }}
     >
@@ -106,8 +106,8 @@ export default function Navbar() {
           <button
             onClick={toggleCart}
             className="px-3 sm:px-4 py-2 rounded-card text-xs sm:text-sm font-bold flex items-center gap-1.5 sm:gap-2 transition-all duration-200 relative"
-            style={{ background: "var(--accent)", color: "var(--bg)" }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent-hover)"; e.currentTarget.style.boxShadow = "0 0 20px rgba(0,194,178,0.3)"; }}
+            style={{ background: "var(--accent)", color: "var(--on-accent)" }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent-hover)"; e.currentTarget.style.boxShadow = "0 0 20px rgba(138,90,60,0.24)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "var(--accent)"; e.currentTarget.style.boxShadow = "none"; }}
           >
             🛒 <span className="hidden xs:inline">Cart</span>
@@ -134,7 +134,7 @@ export default function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="lg:hidden border-t" style={{ background: "rgba(10,15,30,0.97)", borderColor: "var(--border-color)" }}>
+        <div className="lg:hidden border-t" style={{ background: "rgba(247,241,231,0.96)", borderColor: "var(--border-color)" }}>
           <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-4 flex flex-col gap-3">
             {navLinks.map((link) => (
               <Link

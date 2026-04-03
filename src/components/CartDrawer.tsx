@@ -81,8 +81,8 @@ export default function CartDrawer() {
             <button
               onClick={handleCheckout}
               className="w-full py-3 rounded-card font-bold text-sm transition-all duration-200"
-              style={{ background: "var(--accent)", color: "var(--bg)" }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent-hover)"; e.currentTarget.style.boxShadow = "0 0 30px rgba(0,194,178,0.3)"; }}
+              style={{ background: "var(--accent)", color: "var(--on-accent)" }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent-hover)"; e.currentTarget.style.boxShadow = "0 0 30px rgba(138,90,60,0.24)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = "var(--accent)"; e.currentTarget.style.boxShadow = "none"; }}
             >
               Proceed to Checkout →

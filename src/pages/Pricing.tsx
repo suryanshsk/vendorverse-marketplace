@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useToast } from "@/components/Toast";
+import { useNavigate } from "react-router-dom";
 import { faqs } from "@/data/faqs";
 
 const plans = [
@@ -60,8 +60,17 @@ const plans = [
 ];
 
 export default function Pricing() {
-  const { showToast } = useToast();
+  const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const handlePlanAction = (planName: string) => {
+    if (planName === "Enterprise") {
+      navigate("/contact?subject=Enterprise%20Plan%20Inquiry");
+      return;
+    }
+
+    navigate(`/signup?plan=${encodeURIComponent(planName)}&role=vendor`);
+  };
 
   return (
     <div style={{ paddingTop: 68 }}>
@@ -81,13 +90,13 @@ export default function Pricing() {
                 style={{
                   background: "var(--surface)",
                   borderColor: plan.popular ? "var(--accent-border)" : "var(--border-color)",
-                  boxShadow: plan.popular ? "0 0 40px rgba(0,194,178,0.1)" : "none",
+                  boxShadow: plan.popular ? "0 0 40px rgba(138,90,60,0.1)" : "none",
                 }}
               >
                 {plan.popular && (
                   <span
                     className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-pill text-xs font-bold whitespace-nowrap"
-                    style={{ background: "var(--accent)", color: "var(--bg)" }}
+                    style={{ background: "var(--accent)", color: "var(--on-accent)" }}
                   >
                     MOST POPULAR
                   </span>
@@ -109,15 +118,15 @@ export default function Pricing() {
                   ))}
                 </div>
                 <button
-                  onClick={() => showToast(`${plan.name} plan selected!`)}
+                  onClick={() => handlePlanAction(plan.name)}
                   className="w-full py-3 rounded-card font-bold text-sm border transition-all duration-200"
                   style={{
                     background: plan.primary ? "var(--accent)" : "transparent",
-                    color: plan.primary ? "var(--bg)" : "var(--text-muted)",
+                    color: plan.primary ? "var(--on-accent)" : "var(--text-muted)",
                     borderColor: plan.primary ? "var(--accent)" : "var(--border-color)",
                   }}
                   onMouseEnter={(e) => {
-                    if (plan.primary) e.currentTarget.style.boxShadow = "0 0 30px rgba(0,194,178,0.3)";
+                    if (plan.primary) e.currentTarget.style.boxShadow = "0 0 30px rgba(138,90,60,0.24)";
                     else { e.currentTarget.style.borderColor = "var(--accent-border)"; e.currentTarget.style.background = "var(--accent-glow)"; }
                   }}
                   onMouseLeave={(e) => {

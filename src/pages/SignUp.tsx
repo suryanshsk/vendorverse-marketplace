@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { useAuth, type UserRole } from "@/context/AuthContext";
 import { useToast } from "@/components/Toast";
@@ -11,14 +11,16 @@ const roleOptions: { label: string; value: UserRole }[] = [
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { signUp } = useAuth();
   const { showToast } = useToast();
+  const selectedPlan = searchParams.get("plan");
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
-    role: "vendor" as UserRole,
+    role: (searchParams.get("role") as UserRole) || "vendor",
   });
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -44,6 +46,11 @@ export default function SignUp() {
             <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>
               Register as customer, vendor, or admin.
             </p>
+            {selectedPlan && (
+              <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-pill border text-xs font-semibold" style={{ borderColor: "var(--accent-border)", color: "var(--accent)", background: "var(--accent-glow)" }}>
+                Selected plan: {selectedPlan}
+              </div>
+            )}
           </div>
 
           <div className="rounded-[20px] border p-8" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
@@ -116,7 +123,7 @@ export default function SignUp() {
               <button
                 type="submit"
                 className="w-full py-3 rounded-card font-bold text-sm transition-all"
-                style={{ background: "var(--accent)", color: "var(--bg)" }}
+                style={{ background: "var(--accent)", color: "var(--on-accent)" }}
               >
                 Create Account →
               </button>

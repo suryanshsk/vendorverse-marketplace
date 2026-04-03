@@ -98,7 +98,7 @@ export default function SignIn() {
               <button
                 type="submit"
                 className="w-full py-3 rounded-card font-bold text-sm transition-all"
-                style={{ background: "var(--accent)", color: "var(--bg)" }}
+                style={{ background: "var(--accent)", color: "var(--on-accent)" }}
               >
                 Sign In →
               </button>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useToast } from "@/components/Toast";
 import { apiRequest } from "@/lib/api";
 
@@ -10,8 +11,15 @@ const contactInfo = [
 ];
 
 export default function Contact() {
+  const [searchParams] = useSearchParams();
   const { showToast } = useToast();
-  const [form, setForm] = useState({ firstName: "", lastName: "", email: "", subject: "", message: "" });
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    subject: searchParams.get("subject") ?? "",
+    message: "",
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,8 +120,8 @@ export default function Contact() {
                 <button
                   type="submit"
                   className="w-full py-3 rounded-card font-bold text-sm transition-all duration-200"
-                  style={{ background: "var(--accent)", color: "var(--bg)" }}
-                  onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 30px rgba(0,194,178,0.3)"; }}
+                  style={{ background: "var(--accent)", color: "var(--on-accent)" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 30px rgba(138,90,60,0.24)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}
                 >
                   Send Message →

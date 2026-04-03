@@ -91,14 +91,14 @@ export default function Products() {
                 key={p.id}
                 className="rounded-card border overflow-hidden transition-all duration-300 hover:-translate-y-1 group"
                 style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent-border)"; e.currentTarget.style.boxShadow = "0 0 30px rgba(0,194,178,0.08)"; }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent-border)"; e.currentTarget.style.boxShadow = "0 0 30px rgba(138,90,60,0.08)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-color)"; e.currentTarget.style.boxShadow = "none"; }}
               >
                 <div className="h-[160px] sm:h-[200px] flex items-center justify-center text-5xl sm:text-6xl relative" style={{ background: "linear-gradient(135deg, var(--surface2), var(--bg))" }}>
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "radial-gradient(circle at center, rgba(0,194,178,0.08), transparent)" }} />
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "radial-gradient(circle at center, rgba(138,90,60,0.08), transparent)" }} />
                   {p.emoji}
                   {p.badge && (
-                    <span className="absolute top-3 left-3 px-2 py-1 rounded-md font-mono text-[10px] font-bold" style={{ background: "var(--accent)", color: "var(--bg)" }}>
+                    <span className="absolute top-3 left-3 px-2 py-1 rounded-md font-mono text-[10px] font-bold" style={{ background: "var(--accent)", color: "var(--on-accent)" }}>
                       {p.badge}
                     </span>
                   )}
@@ -124,8 +124,8 @@ export default function Products() {
                     <button
                       onClick={() => handleAdd(p)}
                       className="px-3 py-1.5 rounded-md text-xs font-bold transition-all duration-200"
-                      style={{ background: "var(--accent)", color: "var(--bg)" }}
-                      onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 20px rgba(0,194,178,0.3)"; }}
+                      style={{ background: "var(--accent)", color: "var(--on-accent)" }}
+                      onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 20px rgba(138,90,60,0.24)"; }}
                       onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}
                     >
                       Add +

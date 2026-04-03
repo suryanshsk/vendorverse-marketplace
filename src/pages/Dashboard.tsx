@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth, type UserRole } from "@/context/AuthContext";
-import { useToast } from "@/components/Toast";
 import { apiRequest } from "@/lib/api";
 import { products } from "@/data/products";
 
@@ -110,6 +109,257 @@ const storeMetrics = [
   { label: "Response time", value: "1h 12m" },
 ];
 
+type DashboardActionInsight = {
+  title: string;
+  description: string;
+  bullets: string[];
+  primaryLabel?: string;
+  primarySection?: string;
+  primaryRoute?: string;
+  secondaryLabel?: string;
+  secondarySection?: string;
+  secondaryRoute?: string;
+};
+
+function getActionInsight(action: string, role: UserRole): DashboardActionInsight {
+  if (action.startsWith("Edit product:")) {
+    const productName = action.replace("Edit product:", "").trim();
+    const product = products.find((entry) => entry.name === productName);
+
+    return {
+      title: `Editing ${product?.name ?? productName}`,
+      description: `Review listing details, pricing, and visibility for ${product?.vendor ?? "your catalog"}.`,
+      bullets: [
+        product ? `Current price: ₹${product.price.toLocaleString()}` : "Catalog item selected from the product grid.",
+        product ? `Rating: ${product.rating} stars from ${product.reviews} reviews` : "Open the full listing editor to change media and stock.",
+        "Changes now stay inside the dashboard flow instead of disappearing into a toast.",
+      ],
+      primaryLabel: "Open Products",
+      primarySection: "Products",
+      secondaryLabel: "Add new listing",
+      secondarySection: "Products",
+    };
+  }
+
+  if (action === "Add new listing" || action === "Create product") {
+    return {
+      title: "New product listing",
+      description: "Start a new catalog item and keep it inside the product manager.",
+      bullets: [
+        "Use the product panel to review live listings before publishing.",
+        "The catalog view already shows the current store inventory.",
+        "This action now lands on a visible product workspace.",
+      ],
+      primaryLabel: "Open Products",
+      primarySection: "Products",
+      secondaryLabel: "View store",
+      secondarySection: "My Store",
+    };
+  }
+
+  if (action === "Fulfill orders" || action === "Review disputes" || action === "Track purchases") {
+    return {
+      title: role === "customer" ? "Purchase tracking" : "Order center",
+      description: role === "customer" ? "Check order progress, delivery status, and vendor details." : "Process pending orders and resolve open issues.",
+      bullets: role === "customer"
+        ? ["The recent purchases table shows live order states.", "Open deliveries, processing items, and pending items from one place.", "Use the orders panel to keep everything visible."]
+        : ["Pending orders are grouped with the latest fulfillment activity.", "Disputes and deliveries stay inside the order center.", "Order actions now open the actual orders workspace."],
+      primaryLabel: "Open Orders",
+      primarySection: "Orders",
+      secondaryLabel: role === "customer" ? "Browse marketplace" : "Inspect revenue",
+      secondaryRoute: role === "customer" ? "/products" : undefined,
+      secondarySection: role === "customer" ? undefined : "Revenue",
+    };
+  }
+
+  if (action === "View spending" || action === "Export earnings" || action === "Inspect platform GMV" || action === "Download report" || action === "Compare month" || action === "Review payouts") {
+    return {
+      title: "Revenue workspace",
+      description: "Compare sales, export reports, and review earnings without leaving the dashboard.",
+      bullets: [
+        `Current store views: ${storeMetrics[0].value}.`,
+        `Current conversion rate: ${storeMetrics[1].value}.`,
+        "Revenue actions now jump to a real dashboard section instead of a dead button.",
+      ],
+      primaryLabel: "Open Revenue",
+      primarySection: "Revenue",
+      secondaryLabel: "Open Products",
+      secondarySection: "Products",
+    };
+  }
+
+  if (action === "Reply to reviews" || action === "Rate recent order" || action === "Audit feedback") {
+    return {
+      title: "Reviews workspace",
+      description: role === "customer" ? "Rate recent purchases and see your feedback history." : "Reply to customer feedback and keep store ratings visible.",
+      bullets: [
+        "Recent review cards are now part of a dedicated section.",
+        "You can inspect ratings without relying on a console message.",
+        "This keeps review management inside the live dashboard.",
+      ],
+      primaryLabel: "Open Reviews",
+      primarySection: "Reviews",
+      secondaryLabel: "Open Notifications",
+      secondarySection: "Notifications",
+    };
+  }
+
+  if (action === "Read alerts" || action === "Check system alerts" || action === "View updates") {
+    return {
+      title: "Notifications center",
+      description: role === "admin" ? "Monitor approvals, disputes, and system health." : "Track marketplace alerts and important updates.",
+      bullets: [
+        "Alerts are shown in the notifications section now.",
+        "Order, approval, and stock messages stay visible in the UI.",
+        "This action opens the notification workspace instead of doing nothing.",
+      ],
+      primaryLabel: "Open Notifications",
+      primarySection: "Notifications",
+      secondaryLabel: "Open Orders",
+      secondarySection: "Orders",
+    };
+  }
+
+  if (action === "Update profile" || action === "Security settings" || action === "Save changes" || action === "Change password" || action === "Update contact info" || action === "Manage notifications") {
+    return {
+      title: "Settings workspace",
+      description: "Keep profile, security, and notification controls inside the dashboard.",
+      bullets: [
+        "Profile settings remain editable from the settings panel.",
+        "Security and notification controls are grouped together.",
+        "These actions now open content instead of a silent handler.",
+      ],
+      primaryLabel: "Open Settings",
+      primarySection: "Settings",
+      secondaryLabel: "Open Notifications",
+      secondarySection: "Notifications",
+    };
+  }
+
+  if (action === "Browse marketplace" || action === "Open wishlist") {
+    return {
+      title: action === "Browse marketplace" ? "Marketplace opened" : "Wishlist access",
+      description: action === "Browse marketplace" ? "Jump into the product catalog from the customer dashboard." : "Review saved items inside the product catalog.",
+      bullets: [
+        "The products page now becomes the working destination.",
+        "Use the catalog instead of a dead dashboard action.",
+        "This keeps customer navigation concrete and visible.",
+      ],
+      primaryLabel: "Open Products",
+      primaryRoute: "/products",
+      secondaryLabel: "Back to overview",
+      secondarySection: "Overview",
+    };
+  }
+
+  if (action === "Open admin console") {
+    return {
+      title: "Admin console",
+      description: "Overview, vendors, platform activity, and open tickets are all visible here.",
+      bullets: [
+        "Admin metrics are already wired into the overview and activities table.",
+        "Open tickets and vendor approvals remain on the same page.",
+        "This action now points to the actual admin workspace.",
+      ],
+      primaryLabel: "Open Overview",
+      primarySection: "Overview",
+      secondaryLabel: "Open Orders",
+      secondarySection: "Orders",
+    };
+  }
+
+  if (action === "Edit storefront") {
+    return {
+      title: "Storefront editor",
+      description: "Update banners, categories, and shop identity from the store panel.",
+      bullets: [
+        "Store details and live metrics are already visible in the dashboard.",
+        "Open the store section to change branding and layout.",
+        "This button now leads to a visible workspace.",
+      ],
+      primaryLabel: "Open My Store",
+      primarySection: "My Store",
+      secondaryLabel: "Open Products",
+      secondarySection: "Products",
+    };
+  }
+
+  return {
+    title: action,
+    description: "This dashboard action is now linked to visible content.",
+    bullets: [
+      "Use the section buttons to continue the workflow.",
+      "The dashboard no longer relies on console-only feedback.",
+      "Each action now keeps the user inside a visible workflow.",
+    ],
+    primaryLabel: "Open Overview",
+    primarySection: "Overview",
+  };
+}
+
+function DashboardActionBanner({
+  action,
+  role,
+  onClose,
+  onJumpSection,
+  onJumpRoute,
+}: {
+  action: string;
+  role: UserRole;
+  onClose: () => void;
+  onJumpSection: (section: string) => void;
+  onJumpRoute: (route: string) => void;
+}) {
+  const insight = getActionInsight(action, role);
+
+  return (
+    <div className="mb-6 p-4 sm:p-5 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--accent-border)" }}>
+      <div className="flex items-start justify-between gap-3 mb-4">
+        <div>
+          <p className="font-display font-bold text-sm text-[var(--accent)]">{insight.title}</p>
+          <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>{insight.description}</p>
+        </div>
+        <button onClick={onClose} className="text-xs font-bold px-3 py-1.5 rounded-pill border" style={{ borderColor: "var(--border-color)", color: "var(--text-muted)" }}>
+          Close
+        </button>
+      </div>
+      <div className="grid gap-2 mb-4">
+        {insight.bullets.map((bullet) => (
+          <div key={bullet} className="text-sm px-3 py-2 rounded-lg border" style={{ background: "var(--surface2)", borderColor: "var(--border-color)", color: "var(--text)" }}>
+            {bullet}
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {insight.primaryLabel && (
+          <button
+            onClick={() => {
+              if (insight.primaryRoute) onJumpRoute(insight.primaryRoute);
+              if (insight.primarySection) onJumpSection(insight.primarySection);
+            }}
+            className="px-4 py-2 rounded-card text-xs font-bold"
+            style={{ background: "var(--accent)", color: "var(--on-accent)" }}
+          >
+            {insight.primaryLabel}
+          </button>
+        )}
+        {insight.secondaryLabel && (
+          <button
+            onClick={() => {
+              if (insight.secondaryRoute) onJumpRoute(insight.secondaryRoute);
+              if (insight.secondarySection) onJumpSection(insight.secondarySection);
+            }}
+            className="px-4 py-2 rounded-card text-xs font-bold border"
+            style={{ borderColor: "var(--border-color)", color: "var(--text-muted)" }}
+          >
+            {insight.secondaryLabel}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function actionButtonLabel(role: UserRole, item: string) {
   if (role === "customer") {
     if (item === "Overview") return "Browse marketplace";
@@ -162,7 +412,7 @@ function DashboardPanel({
           <button
             onClick={() => onAction(actionButtonLabel(role, activeItem))}
             className="px-4 py-2 rounded-card text-xs font-bold transition-all"
-            style={{ background: "var(--accent)", color: "var(--bg)" }}
+            style={{ background: "var(--accent)", color: "var(--on-accent)" }}
           >
             {actionButtonLabel(role, activeItem)}
           </button>
@@ -202,7 +452,7 @@ function DashboardPanel({
           <button
             onClick={() => onAction(actionButtonLabel(role, activeItem))}
             className="px-4 py-2 rounded-card text-xs font-bold transition-all"
-            style={{ background: "var(--accent)", color: "var(--bg)" }}
+            style={{ background: "var(--accent)", color: "var(--on-accent)" }}
           >
             {actionButtonLabel(role, activeItem)}
           </button>
@@ -241,7 +491,7 @@ function DashboardPanel({
               <p className="font-display font-bold text-sm">Revenue snapshot</p>
               <p className="text-xs" style={{ color: "var(--text-muted)" }}>Recent sales and platform earnings</p>
             </div>
-            <button onClick={() => onAction(actionButtonLabel(role, activeItem))} className="px-4 py-2 rounded-card text-xs font-bold" style={{ background: "var(--accent)", color: "var(--bg)" }}>
+            <button onClick={() => onAction(actionButtonLabel(role, activeItem))} className="px-4 py-2 rounded-card text-xs font-bold" style={{ background: "var(--accent)", color: "var(--on-accent)" }}>
               {actionButtonLabel(role, activeItem)}
             </button>
           </div>
@@ -282,7 +532,7 @@ function DashboardPanel({
             <p style={{ color: "var(--text-muted)" }}>Status: <span style={{ color: "var(--success)" }}>Verified</span></p>
             <p style={{ color: "var(--text-muted)" }}>Support response: <span style={{ color: "var(--text)" }}>Under 2 hours</span></p>
           </div>
-          <button onClick={() => onAction(actionButtonLabel(role, activeItem))} className="mt-4 px-4 py-2 rounded-card text-xs font-bold" style={{ background: "var(--accent)", color: "var(--bg)" }}>
+          <button onClick={() => onAction(actionButtonLabel(role, activeItem))} className="mt-4 px-4 py-2 rounded-card text-xs font-bold" style={{ background: "var(--accent)", color: "var(--on-accent)" }}>
             {actionButtonLabel(role, activeItem)}
           </button>
         </div>
@@ -309,7 +559,7 @@ function DashboardPanel({
             <p className="font-display font-bold text-sm">Customer feedback</p>
             <p className="text-xs" style={{ color: "var(--text-muted)" }}>Recent ratings and review activity.</p>
           </div>
-          <button onClick={() => onAction(actionButtonLabel(role, activeItem))} className="px-4 py-2 rounded-card text-xs font-bold" style={{ background: "var(--accent)", color: "var(--bg)" }}>
+          <button onClick={() => onAction(actionButtonLabel(role, activeItem))} className="px-4 py-2 rounded-card text-xs font-bold" style={{ background: "var(--accent)", color: "var(--on-accent)" }}>
             {actionButtonLabel(role, activeItem)}
           </button>
         </div>
@@ -334,7 +584,7 @@ function DashboardPanel({
             <p className="font-display font-bold text-sm">Notifications</p>
             <p className="text-xs" style={{ color: "var(--text-muted)" }}>Marketplace alerts, approvals, and system updates.</p>
           </div>
-          <button onClick={() => onAction(actionButtonLabel(role, activeItem))} className="px-4 py-2 rounded-card text-xs font-bold" style={{ background: "var(--accent)", color: "var(--bg)" }}>
+          <button onClick={() => onAction(actionButtonLabel(role, activeItem))} className="px-4 py-2 rounded-card text-xs font-bold" style={{ background: "var(--accent)", color: "var(--on-accent)" }}>
             {actionButtonLabel(role, activeItem)}
           </button>
         </div>
@@ -358,7 +608,7 @@ function DashboardPanel({
             <p>Email notifications: <span style={{ color: "var(--success)" }}>Enabled</span></p>
             <p>Security: <span style={{ color: "var(--text)" }}>JWT + HTTPS</span></p>
           </div>
-          <button onClick={() => onAction(actionButtonLabel(role, activeItem))} className="mt-4 px-4 py-2 rounded-card text-xs font-bold" style={{ background: "var(--accent)", color: "var(--bg)" }}>
+          <button onClick={() => onAction(actionButtonLabel(role, activeItem))} className="mt-4 px-4 py-2 rounded-card text-xs font-bold" style={{ background: "var(--accent)", color: "var(--on-accent)" }}>
             {actionButtonLabel(role, activeItem)}
           </button>
         </div>
@@ -398,8 +648,8 @@ function roleSubtext(role: UserRole) {
 export default function Dashboard() {
   const navigate = useNavigate();
   const { currentUser, signOut } = useAuth();
-  const { showToast } = useToast();
   const [activeItem, setActiveItem] = useState("Overview");
+  const [activeAction, setActiveAction] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [previewRole, setPreviewRole] = useState<UserRole>("vendor");
   const [remoteOrders, setRemoteOrders] = useState(stakeholderRows.vendor);
@@ -421,43 +671,83 @@ export default function Dashboard() {
   const handleSidebarClick = (label: string) => {
     if (label === "Logout") {
       signOut();
-      showToast("✅ Logged out successfully");
       navigate("/signin");
       return;
     }
+    setActiveAction(null);
     setActiveItem(label);
     setSidebarOpen(false);
   };
 
+  const openDashboardSection = (label: string) => {
+    setActiveItem(label);
+    setSidebarOpen(false);
+  };
+
+  const jumpToSection = (label: string) => {
+    setActiveAction(null);
+    openDashboardSection(label);
+  };
+
+  const jumpToRoute = (route: string) => {
+    setActiveAction(null);
+    navigate(route);
+  };
+
   const handlePanelAction = (label: string) => {
+    setActiveAction(label);
+
     if (label === "Browse marketplace") {
-      navigate("/products");
+      jumpToRoute("/products");
       return;
     }
     if (label === "Open wishlist") {
-      showToast("❤️ Wishlist is saved in your dashboard session.");
+      jumpToRoute("/products");
       return;
     }
     if (label === "Open admin console") {
-      showToast("⚙️ Admin console section opened.");
+      jumpToSection("Overview");
       return;
     }
     if (label === "Edit storefront") {
-      showToast("🏬 Storefront editor opened.");
+      jumpToSection("My Store");
       return;
     }
     if (label === "Track purchases") {
-      navigate("/products");
+      jumpToSection("Orders");
       return;
     }
-    showToast(`✅ ${label}`);
+    if (label === "Create product" || label === "Add new listing") {
+      jumpToSection("Products");
+      return;
+    }
+    if (label === "Fulfill orders" || label === "Review disputes") {
+      jumpToSection("Orders");
+      return;
+    }
+    if (label === "View spending" || label === "Export earnings" || label === "Inspect platform GMV") {
+      jumpToSection("Revenue");
+      return;
+    }
+    if (label === "Reply to reviews" || label === "Rate recent order" || label === "Audit feedback") {
+      jumpToSection("Reviews");
+      return;
+    }
+    if (label === "Read alerts" || label === "Check system alerts" || label === "View updates") {
+      jumpToSection("Notifications");
+      return;
+    }
+    if (label === "Update profile" || label === "Security settings" || label === "Save changes" || label === "Change password" || label === "Update contact info" || label === "Manage notifications") {
+      jumpToSection("Settings");
+      return;
+    }
   };
 
   return (
     <div style={{ paddingTop: 68 }} className="flex min-h-screen relative">
       <button
         className="lg:hidden fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full flex items-center justify-center text-lg shadow-lg"
-        style={{ background: "var(--accent)", color: "var(--bg)" }}
+        style={{ background: "var(--accent)", color: "var(--on-accent)" }}
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
         {sidebarOpen ? "✕" : "☰"}
@@ -549,10 +839,20 @@ export default function Dashboard() {
                 {roleTitle(currentRole)}
               </p>
             </div>
-            <div className="w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm flex-shrink-0 self-start sm:self-auto" style={{ background: "var(--accent)", color: "var(--bg)" }}>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm flex-shrink-0 self-start sm:self-auto" style={{ background: "var(--accent)", color: "var(--on-accent)" }}>
               {(currentUser?.firstName ?? "A").charAt(0).toUpperCase()}
             </div>
           </div>
+
+          {activeAction && (
+            <DashboardActionBanner
+              action={activeAction}
+              role={currentRole}
+              onClose={() => setActiveAction(null)}
+              onJumpSection={jumpToSection}
+              onJumpRoute={jumpToRoute}
+            />
+          )}
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
             {roleKpis[currentRole].map((kpi) => (

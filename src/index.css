@@ -3,17 +3,18 @@
 @tailwind utilities;
 
 :root {
-  --accent: #00C2B2;
-  --accent-hover: #00A99C;
-  --accent-glow: rgba(0, 194, 178, 0.18);
-  --accent-border: rgba(0, 194, 178, 0.30);
-  --bg: #0A0F1E;
-  --surface: #111827;
-  --surface2: #1A2235;
-  --border-color: rgba(255, 255, 255, 0.07);
-  --text: #F0F4FF;
-  --text-muted: #8C9AB0;
-  --text-dim: #4A5568;
+  --accent: #8A5A3C;
+  --accent-hover: #74472D;
+  --accent-glow: rgba(138, 90, 60, 0.12);
+  --accent-border: rgba(138, 90, 60, 0.18);
+  --bg: #F7F1E7;
+  --surface: #FFFDF8;
+  --surface2: #F4ECDE;
+  --border-color: rgba(73, 54, 40, 0.12);
+  --text: #211915;
+  --text-muted: #6C5A4D;
+  --text-dim: #98816E;
+  --on-accent: #FFF9F2;
   --success: #22C55E;
   --warning: #F59E0B;
   --danger: #EF4444;
@@ -43,6 +44,10 @@ html {
 
 body {
   font-family: 'Inter', sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255, 252, 247, 0.88), transparent 38%),
+    radial-gradient(circle at 85% 15%, rgba(203, 164, 132, 0.18), transparent 24%),
+    linear-gradient(180deg, #FFFDF8 0%, #F7F1E7 52%, #F1E6D8 100%);
   background-color: var(--bg);
   color: var(--text);
   line-height: 1.6;
@@ -55,7 +60,7 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.025;
+  opacity: 0.035;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 256px 256px;
@@ -70,6 +75,11 @@ body::before {
 ::-webkit-scrollbar-thumb {
   background: var(--accent);
   border-radius: 10px;
+}
+
+::selection {
+  background: rgba(138, 90, 60, 0.18);
+  color: var(--text);
 }
 
 @keyframes float {
