@@ -6,7 +6,7 @@ import { apiRequest } from "@/lib/api";
 const contactInfo = [
   { icon: "📍", title: "Address", value: "NIET, Greater Noida, Uttar Pradesh, India" },
   { icon: "✉️", title: "Email", value: "vendorverse@niet.ac.in" },
-  { icon: "🛠️", title: "Tech Stack", value: "React.js · Node.js · Express.js · MongoDB" },
+  { icon: "🛠️", title: "Tech Stack", value: "React.js · TypeScript · Vite · Tailwind CSS · Neon Postgres · Vercel Serverless" },
   { icon: "👨‍🏫", title: "Supervisor", value: "Mr. Amit Kumar Yadav, Dept of CSE, NIET" },
 ];
 

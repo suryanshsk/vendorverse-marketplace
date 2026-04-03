@@ -37,12 +37,12 @@ const roles = [
 
 const techStack = [
   { icon: "⚛️", name: "React.js", type: "Frontend" },
-  { icon: "🟢", name: "Node.js", type: "Runtime" },
-  { icon: "🚂", name: "Express.js", type: "Backend" },
-  { icon: "🍃", name: "MongoDB", type: "Database" },
-  { icon: "🔑", name: "JWT Auth", type: "Security" },
-  { icon: "💰", name: "Razorpay", type: "Payments" },
-  { icon: "▲", name: "Vercel", type: "Hosting" },
+  { icon: "🔷", name: "TypeScript", type: "Type Safety" },
+  { icon: "⚡", name: "Vite", type: "Build Tool" },
+  { icon: "🎨", name: "Tailwind CSS", type: "Styling" },
+  { icon: "🪐", name: "Neon Postgres", type: "Database" },
+  { icon: "🔐", name: "JWT + bcrypt", type: "Auth" },
+  { icon: "▲", name: "Vercel Serverless", type: "Hosting" },
   { icon: "🐙", name: "GitHub", type: "Version Control" },
 ];
 

@@ -16,9 +16,9 @@ const projectLinks = [
 
 const techLinks = [
   { label: "React.js", href: "https://react.dev" },
-  { label: "Node.js + Express", href: "https://nodejs.org" },
-  { label: "MongoDB Atlas", href: "https://www.mongodb.com/atlas" },
-  { label: "JWT Auth", href: "https://jwt.io" },
+  { label: "TypeScript", href: "https://www.typescriptlang.org" },
+  { label: "Neon Postgres", href: "https://neon.tech" },
+  { label: "Vercel Serverless", href: "https://vercel.com" },
 ];
 
 export default function Footer() {
@@ -32,7 +32,7 @@ export default function Footer() {
               <span style={{ color: "var(--accent)" }}>Verse</span>
             </Link>
             <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
-              A scalable multivendor e-commerce marketplace built with the MERN stack.
+              A scalable multivendor e-commerce marketplace built with React, TypeScript, Vite, Tailwind CSS, Neon Postgres, and Vercel serverless functions.
             </p>
           </div>
 
@@ -82,7 +82,7 @@ export default function Footer() {
             © 2026 VendorVerse. All rights reserved.
           </p>
           <p className="text-xs" style={{ color: "var(--text-dim)" }}>
-            Built with <span style={{ color: "var(--accent)" }}>React</span> · <span style={{ color: "var(--accent)" }}>Node</span> · <span style={{ color: "var(--accent)" }}>MongoDB</span>
+            Built with <span style={{ color: "var(--accent)" }}>React</span> · <span style={{ color: "var(--accent)" }}>TypeScript</span> · <span style={{ color: "var(--accent)" }}>Neon Postgres</span>
           </p>
         </div>
       </div>

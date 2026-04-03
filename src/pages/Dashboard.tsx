@@ -109,6 +109,33 @@ const storeMetrics = [
   { label: "Response time", value: "1h 12m" },
 ];
 
+const roleThemes: Record<UserRole, { title: string; subtitle: string; badge: string; gradient: string; highlight: string; quickActions: string[] }> = {
+  vendor: {
+    title: "Vendor Workspace",
+    subtitle: "Manage listings, fulfill orders, and monitor store performance.",
+    badge: "Store Operations",
+    gradient: "linear-gradient(135deg, rgba(138,90,60,0.16), rgba(255,253,248,0.96))",
+    highlight: "rgba(138,90,60,0.12)",
+    quickActions: ["Add new listing", "Fulfill orders", "Edit storefront"],
+  },
+  customer: {
+    title: "Customer Hub",
+    subtitle: "Track purchases, wishlist items, and spending insights.",
+    badge: "Buyer Experience",
+    gradient: "linear-gradient(135deg, rgba(86,120,152,0.12), rgba(255,253,248,0.96))",
+    highlight: "rgba(86,120,152,0.10)",
+    quickActions: ["Browse marketplace", "Track purchases", "View spending"],
+  },
+  admin: {
+    title: "Admin Control Center",
+    subtitle: "Oversee vendors, disputes, platform health, and approvals.",
+    badge: "Platform Oversight",
+    gradient: "linear-gradient(135deg, rgba(110,82,150,0.12), rgba(255,253,248,0.96))",
+    highlight: "rgba(110,82,150,0.10)",
+    quickActions: ["Open admin console", "Review disputes", "Check system alerts"],
+  },
+};
+
 type DashboardActionInsight = {
   title: string;
   description: string;
@@ -401,6 +428,87 @@ function DashboardPanel({
   activeItem: string;
   onAction: (label: string) => void;
 }) {
+  if (activeItem === "Overview") {
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2 p-4 sm:p-5 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <div>
+              <p className="font-display font-bold text-sm">{role === "vendor" ? "Store Overview" : role === "customer" ? "Shopping Overview" : "Platform Overview"}</p>
+              <p className="text-xs" style={{ color: "var(--text-muted)" }}>
+                {role === "vendor"
+                  ? "Monitor store health, add products, and manage fulfillment."
+                  : role === "customer"
+                    ? "Review your orders, wishlist, and spending in one place."
+                    : "Track approvals, platform activity, and issue resolution."}
+              </p>
+            </div>
+            <button
+              onClick={() => onAction(actionButtonLabel(role, activeItem))}
+              className="px-4 py-2 rounded-card text-xs font-bold transition-all"
+              style={{ background: "var(--accent)", color: "var(--on-accent)" }}
+            >
+              {actionButtonLabel(role, activeItem)}
+            </button>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {role === "vendor"
+              ? [
+                  { label: "Open Listings", value: "47", action: "Add new listing" },
+                  { label: "Pending Orders", value: "77", action: "Fulfill orders" },
+                  { label: "Store Rating", value: "4.8", action: "Reply to reviews" },
+                ].map((item) => (
+                  <button key={item.label} onClick={() => onAction(item.action)} className="p-4 rounded-card border text-left transition-all hover:-translate-y-1" style={{ background: "var(--surface2)", borderColor: "var(--border-color)" }}>
+                    <p className="text-[11px] uppercase tracking-widest mb-2" style={{ color: "var(--text-dim)" }}>{item.label}</p>
+                    <p className="font-display font-extrabold text-2xl mb-1" style={{ color: "var(--accent)" }}>{item.value}</p>
+                    <p className="text-xs" style={{ color: "var(--text-muted)" }}>Tap to continue</p>
+                  </button>
+                ))
+              : role === "customer"
+                ? [
+                    { label: "Wishlist", value: "18", action: "Open wishlist" },
+                    { label: "Active Deliveries", value: "3", action: "Track purchases" },
+                    { label: "Spent This Month", value: "₹41,820", action: "View spending" },
+                  ].map((item) => (
+                    <button key={item.label} onClick={() => onAction(item.action)} className="p-4 rounded-card border text-left transition-all hover:-translate-y-1" style={{ background: "var(--surface2)", borderColor: "var(--border-color)" }}>
+                      <p className="text-[11px] uppercase tracking-widest mb-2" style={{ color: "var(--text-dim)" }}>{item.label}</p>
+                      <p className="font-display font-extrabold text-2xl mb-1" style={{ color: "var(--accent)" }}>{item.value}</p>
+                      <p className="text-xs" style={{ color: "var(--text-muted)" }}>Tap to continue</p>
+                    </button>
+                  ))
+                : [
+                    { label: "Open Tickets", value: "14", action: "Check system alerts" },
+                    { label: "Vendor Approvals", value: "9", action: "Open admin console" },
+                    { label: "Disputes", value: "4", action: "Review disputes" },
+                  ].map((item) => (
+                    <button key={item.label} onClick={() => onAction(item.action)} className="p-4 rounded-card border text-left transition-all hover:-translate-y-1" style={{ background: "var(--surface2)", borderColor: "var(--border-color)" }}>
+                      <p className="text-[11px] uppercase tracking-widest mb-2" style={{ color: "var(--text-dim)" }}>{item.label}</p>
+                      <p className="font-display font-extrabold text-2xl mb-1" style={{ color: "var(--accent)" }}>{item.value}</p>
+                      <p className="text-xs" style={{ color: "var(--text-muted)" }}>Tap to continue</p>
+                    </button>
+                  ))}
+          </div>
+        </div>
+
+        <div className="p-4 sm:p-5 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
+          <p className="font-display font-bold text-sm mb-3">Quick Actions</p>
+          <div className="flex flex-col gap-2">
+            {(role === "vendor"
+              ? ["Add new listing", "Fulfill orders", "Edit storefront"]
+              : role === "customer"
+                ? ["Browse marketplace", "Track purchases", "View spending"]
+                : ["Open admin console", "Review disputes", "Check system alerts"]
+            ).map((item) => (
+              <button key={item} onClick={() => onAction(item)} className="text-left px-3 py-2 rounded-lg border text-sm transition-all hover:-translate-y-0.5" style={{ borderColor: "var(--border-color)", color: "var(--text-muted)" }}>
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (activeItem === "Products") {
     return (
       <div className="p-4 sm:p-5 rounded-card border" style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}>
@@ -432,7 +540,7 @@ function DashboardPanel({
               </div>
               <div className="flex items-center justify-between text-xs">
                 <span style={{ color: "var(--text-muted)" }}>Rating {product.rating} • {product.reviews} reviews</span>
-                <button onClick={() => onAction(`Edited ${product.name}`)} className="text-[11px] font-bold" style={{ color: "var(--accent)" }}>Edit</button>
+                <button onClick={() => onAction(`Edit product:${product.name}`)} className="text-[11px] font-bold" style={{ color: "var(--accent)" }}>Edit</button>
               </div>
             </div>
           ))}
@@ -659,6 +767,8 @@ export default function Dashboard() {
     return previewRole;
   }, [currentUser?.role, previewRole]);
 
+  const roleTheme = roleThemes[currentRole];
+
   useEffect(() => {
     void (async () => {
       const response = await apiRequest<{ orders: typeof stakeholderRows.vendor }>(`/api/dashboard?role=${currentRole}`);
@@ -685,7 +795,6 @@ export default function Dashboard() {
   };
 
   const jumpToSection = (label: string) => {
-    setActiveAction(null);
     openDashboardSection(label);
   };
 
@@ -710,6 +819,10 @@ export default function Dashboard() {
       return;
     }
     if (label === "Edit storefront") {
+      jumpToSection("My Store");
+      return;
+    }
+    if (label === "Manage vendors") {
       jumpToSection("My Store");
       return;
     }
@@ -741,10 +854,14 @@ export default function Dashboard() {
       jumpToSection("Settings");
       return;
     }
+    if (label === "Open section") {
+      jumpToSection("Overview");
+      return;
+    }
   };
 
   return (
-    <div style={{ paddingTop: 68 }} className="flex min-h-screen relative">
+    <div style={{ paddingTop: 68, background: roleTheme.gradient }} className="flex min-h-screen relative">
       <button
         className="lg:hidden fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full flex items-center justify-center text-lg shadow-lg"
         style={{ background: "var(--accent)", color: "var(--on-accent)" }}
@@ -763,7 +880,7 @@ export default function Dashboard() {
 
       <aside
         className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 fixed lg:sticky top-[68px] left-0 z-40 flex flex-col w-60 flex-shrink-0 border-r h-[calc(100vh-68px)] overflow-y-auto transition-transform duration-300`}
-        style={{ background: "var(--surface)", borderColor: "var(--border-color)" }}
+        style={{ background: "var(--surface)", borderColor: currentRole === "vendor" ? "rgba(138,90,60,0.18)" : currentRole === "customer" ? "rgba(86,120,152,0.18)" : "rgba(110,82,150,0.18)" }}
       >
         <div className="p-5">
           <p className="font-display font-extrabold text-sm">
@@ -841,6 +958,32 @@ export default function Dashboard() {
             </div>
             <div className="w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm flex-shrink-0 self-start sm:self-auto" style={{ background: "var(--accent)", color: "var(--on-accent)" }}>
               {(currentUser?.firstName ?? "A").charAt(0).toUpperCase()}
+            </div>
+          </div>
+
+          <div className="mb-6 sm:mb-8 p-4 sm:p-6 rounded-card border" style={{ background: roleTheme.highlight, borderColor: "var(--border-color)" }}>
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.28em] mb-2" style={{ color: "var(--accent)" }}>
+                  {roleTheme.badge}
+                </p>
+                <h2 className="font-display font-extrabold text-xl sm:text-2xl mb-2">{roleTheme.title}</h2>
+                <p className="text-sm sm:text-base max-w-2xl" style={{ color: "var(--text-muted)" }}>
+                  {roleTheme.subtitle}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {roleTheme.quickActions.map((action) => (
+                  <button
+                    key={action}
+                    onClick={() => handlePanelAction(action)}
+                    className="px-3 py-2 rounded-pill border text-xs font-semibold transition-all"
+                    style={{ borderColor: "var(--accent-border)", color: "var(--accent)", background: "var(--surface)" }}
+                  >
+                    {action}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
